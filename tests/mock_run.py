@@ -10,7 +10,7 @@ print("running in", tmp)
 os.environ["LICHESS_TOKEN"] = "test"
 import matplotlib; matplotlib.use("Agg")
 import nbformat
-import explorer, wiki_scrape
+import src.explorer as explorer, src.wiki_scrape as wiki_scrape
 
 SPEED_DRAW = dict(bullet=.04, blitz=.05, rapid=.06, classical=.09)
 SPEED_SC = dict(bullet=.512, blitz=.516, rapid=.522, classical=.530)
