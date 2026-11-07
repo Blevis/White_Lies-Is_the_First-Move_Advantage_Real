@@ -1,0 +1,8 @@
+.env
+.cache/
+data/wiki_openings.html
+__pycache__/
+.ipynb_checkpoints/
+
+.vscode/*
+!.vscode/settings.json
