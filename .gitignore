@@ -6,3 +6,7 @@ __pycache__/
 
 .vscode/*
 !.vscode/settings.json
+
+# raw downloads (dumps are streamed, never stored)
+data/raw/
+*.pgn.zst

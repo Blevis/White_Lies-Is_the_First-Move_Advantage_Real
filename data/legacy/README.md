@@ -1,0 +1,1 @@
+Legacy sample from the old fetch_games.py: it drops resignations (inflating draws), stops early per cell (covers only the start of the month) and has no date/player columns, so it must not be used for H1/H2; use the new sample from src/fetch_games.py.
