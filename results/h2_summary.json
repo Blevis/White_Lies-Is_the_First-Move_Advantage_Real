@@ -1,0 +1,61 @@
+{
+  "min_n": 200,
+  "min_band": 1200,
+  "n_sim": 10000,
+  "seed": 202503,
+  "selected_e4_d4_games": 714224,
+  "included_games": 602437,
+  "total_selected_coverage": 0.8434846770760994,
+  "within_band_coverage": 0.9694647029667918,
+  "tested_cells": 35,
+  "score_rejections": 14,
+  "distribution_rejections": 15,
+  "eligible_replies": [
+    "Nc6",
+    "Nf6",
+    "a6",
+    "b6",
+    "c5",
+    "c6",
+    "d5",
+    "d6",
+    "e5",
+    "e6",
+    "f5",
+    "g6"
+  ],
+  "eligible_by_first": {
+    "e4": [
+      "Nc6",
+      "Nf6",
+      "a6",
+      "b6",
+      "c5",
+      "c6",
+      "d5",
+      "d6",
+      "e5",
+      "e6",
+      "g6"
+    ],
+    "d4": [
+      "Nc6",
+      "Nf6",
+      "b6",
+      "c5",
+      "c6",
+      "d5",
+      "d6",
+      "e5",
+      "e6",
+      "f5",
+      "g6"
+    ]
+  },
+  "median_range_pp": 6.241611607721204,
+  "min_range_pp": 1.0852407261247032,
+  "max_range_pp": 12.302676399026764,
+  "median_excess_sd_pp": 1.2017865043341063,
+  "adjustment": "Separate BH families for score-spread and full W/D/B-distribution omnibus tests",
+  "assumptions": "Independent games within each cell; representative dyadic sensitivity reported separately"
+}

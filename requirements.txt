@@ -8,3 +8,8 @@ python-dotenv
 jupyter
 pyarrow
 zstandard
+scipy
+patsy
+pytest
+nbclient
+tabulate

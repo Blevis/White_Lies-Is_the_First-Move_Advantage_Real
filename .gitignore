@@ -10,3 +10,5 @@ __pycache__/
 # raw downloads (dumps are streamed, never stored)
 data/raw/
 *.pgn.zst
+.venv/
+.pytest_cache/
