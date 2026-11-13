@@ -15,10 +15,12 @@ mean sim sd^2)) and `range_obs`, in score points. Judge those, not p.
 
 Two data paths feed the same test:
   * collect_replies()      -- explorer aggregates (full counts; the primary path),
-  * replies_from_games()   -- individual game records from data/games.csv (fetch_games.py).
-    CAVEAT: that sample drops resignations, is quota-capped per speed x band and is a time-skewed
-    prefix of one monthly dump, so levels are biased and resignation propensity differs by opening.
-    Use it as a robustness check on the spread, never for absolute scores (Q1).
+  * replies_from_games()   -- individual game records (parquet or csv) from fetch_games.py: a
+    deterministic hash sample of ONE whole monthly dump, with resignations kept and BOT games
+    excluded. The sampling rate depends only on (speed, band), so it is constant inside every
+    cell and the spread test needs no weighting. It is still one month of one site: use it as a
+    robustness check on the spread rather than for absolute scores (Q1), and check the manifest's
+    complete flag first.
 """
 import pathlib
 import numpy as np
@@ -74,12 +76,15 @@ def collect_replies(ex, first_moves=FIRST_MOVES, speeds=SPEEDS, ratings=RATINGS,
     return df
 
 
-def replies_from_games(games_csv="data/games.csv", min_band=MIN_BAND):
-    """Individual game records -> the same long format. `first4` is SAN 'e4 c5 d4 cxd4'; keeps
-    only games starting 1.e4 / 1.d4, reply = 2nd token. See module caveat before using."""
-    g = pd.read_csv(games_csv, usecols=["speed", "band", "result", "first4"])
-    t = g.first4.str.split(" ", n=2, expand=True)
-    g = g.assign(first=t[0], reply=t[1])
+def replies_from_games(games_path="data/games.parquet", min_band=MIN_BAND):
+    """Individual game records (fetch_games.py output, .parquet or .csv) -> the same long format.
+    Uses `first_move` / `black_reply`; keeps only games starting 1.e4 / 1.d4 that have a reply;
+    BOT games are excluded. See module caveat before using."""
+    cols = ["speed", "band", "result", "first_move", "black_reply", "white_title", "black_title"]
+    path = str(games_path)
+    g = pd.read_parquet(path, columns=cols) if path.endswith(".parquet") else pd.read_csv(path, usecols=cols)
+    g = g[(g.white_title != "BOT") & (g.black_title != "BOT")]
+    g = g.rename(columns={"first_move": "first", "black_reply": "reply"})
     g = g[g["first"].isin(FIRST_MOVES) & g.reply.notna() & (g.band >= min_band)]
     for col, val in (("W", "1-0"), ("D", "1/2-1/2"), ("B", "0-1")):
         g[col] = (g.result == val).astype(int)

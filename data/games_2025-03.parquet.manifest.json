@@ -1,0 +1,75 @@
+{
+  "args": {
+    "month": "2025-03",
+    "url": null,
+    "input": null,
+    "speeds": "blitz,rapid,classical",
+    "min_plies": 2,
+    "keep_terminations": "Normal,Time forfeit",
+    "band_by": "avg",
+    "sample_rate": 0.01,
+    "rate_override": "classical=0.10,2200=0.10,2500=0.10",
+    "limit": null,
+    "out": "data/games_2025-03.parquet",
+    "pgn_out": null
+  },
+  "url": "https://database.lichess.org/standard/lichess_db_standard_rated_2025-03.pgn.zst",
+  "git_commit": "e3948f179706ebb442f668514699b38395271697",
+  "source_month": "2025-03",
+  "rate_overrides": {
+    "speed": {
+      "classical": 0.1
+    },
+    "band": {
+      "2200": 0.1,
+      "2500": 0.1
+    }
+  },
+  "start_utc": "2026-11-12T20:50:31+00:00",
+  "end_utc": "2026-11-13T00:33:47+00:00",
+  "compressed_bytes_read": 31787738173,
+  "games_seen": 97512351,
+  "games_kept": 836070,
+  "games_not_sampled": 58972199,
+  "rejections": {
+    "speed": 37351463,
+    "rating": 0,
+    "result": 1310,
+    "termination": 188228,
+    "bot": 162871,
+    "min_plies": 210
+  },
+  "kept_per_speed_band": {
+    "blitz/0": 26890,
+    "blitz/1000": 40561,
+    "blitz/1200": 62059,
+    "blitz/1400": 82530,
+    "blitz/1600": 93163,
+    "blitz/1800": 81448,
+    "blitz/2000": 45144,
+    "blitz/2200": 174582,
+    "blitz/2500": 17505,
+    "classical/0": 1517,
+    "classical/1000": 4344,
+    "classical/1200": 9227,
+    "classical/1400": 15454,
+    "classical/1600": 13889,
+    "classical/1800": 7746,
+    "classical/2000": 2101,
+    "classical/2200": 283,
+    "classical/2500": 1,
+    "rapid/0": 14919,
+    "rapid/1000": 17695,
+    "rapid/1200": 23715,
+    "rapid/1400": 28729,
+    "rapid/1600": 27265,
+    "rapid/1800": 19617,
+    "rapid/2000": 7837,
+    "rapid/2200": 17336,
+    "rapid/2500": 513
+  },
+  "complete": true,
+  "error": null,
+  "output": "data/games_2025-03.parquet",
+  "output_sha256": "e055e8f921b3b242188c0493d57acc8fe83a2200ee0223e6cb817dc5a627ffaa"
+}

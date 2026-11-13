@@ -6,3 +6,5 @@ seaborn
 lxml
 python-dotenv
 jupyter
+pyarrow
+zstandard

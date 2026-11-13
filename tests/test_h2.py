@@ -107,15 +107,24 @@ def test_run_h2_filters_and_draw_rate_preserved():
     assert 0.97 < cv.coverage.iloc[0] < 1.0
 
 
+def _games():
+    return pd.DataFrame(dict(
+        speed=["blitz"] * 6, band=[1600] * 6,
+        result=["1-0", "0-1", "1/2-1/2", "1-0", "1-0", "1-0"],
+        first_move=["e4", "e4", "e4", "d4", "Nf3", "e4"],
+        black_reply=["c5", "c5", "e5", "d5", "d5", "c5"],
+        white_title=[None, None, None, None, None, "BOT"], black_title=[None] * 6))
+
+
 def test_replies_from_games():
     with tempfile.TemporaryDirectory() as tmp:
-        g = pd.DataFrame(dict(speed=["blitz"] * 5, band=[1600] * 5,
-                              result=["1-0", "0-1", "1/2-1/2", "1-0", "1-0"],
-                              first4=["e4 c5 Nf3 d6", "e4 c5 Nf3 d6", "e4 e5 Nf3 Nc6", "d4 d5 c4 e6", "Nf3 d5 g3 Nf6"]))
-        g.to_csv(tmp + "/g.csv", index=False)
-        r = h2.replies_from_games(tmp + "/g.csv")
-        c5 = r[(r["first"] == "e4") & (r.reply == "c5")].iloc[0]
-        assert (c5.W, c5.D, c5.B) == (1, 0, 1) and "Nf3" not in set(r["first"])
+        for name, write in (("g.csv", lambda g, p: g.to_csv(p, index=False)),
+                            ("g.parquet", lambda g, p: g.to_parquet(p))):
+            write(_games(), f"{tmp}/{name}")
+            r = h2.replies_from_games(f"{tmp}/{name}")
+            c5 = r[(r["first"] == "e4") & (r.reply == "c5")].iloc[0]
+            # 3 e4-c5 games, one of them a BOT game -> excluded
+            assert (c5.W, c5.D, c5.B) == (1, 0, 1) and "Nf3" not in set(r["first"])
 
 
 if __name__ == "__main__":

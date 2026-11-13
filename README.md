@@ -55,6 +55,43 @@ The project brings together two sources:
 
 **Target study design:** games from **January–December 2025**, rating bands from **1000 to 2500**, and **blitz, rapid, and classical** time controls, with Masters results for comparison. Opening positions are matched to ECO definitions through their moves.
 
+### Game-level sample (Lichess monthly dump)
+
+`src/fetch_games.py` streams **one** 2025 monthly dump (`.pgn.zst`) and writes a uniform random sample of games, one row per game. The dump is never saved to disk, and the whole file is always read, so the sample covers the entire month.
+
+```bash
+python src/fetch_games.py --month 2025-06 --out data/games_2025-06.parquet \
+    --rate-override "classical=0.10,2200=0.10,2500=0.10"
+```
+
+**Sampling design**
+
+- A game is kept iff `int(md5(game_id).hexdigest()[:8], 16) / 0xFFFFFFFF < rate`. The decision depends only on the game id, so the same game is always kept or always dropped, in any run.
+- `rate = max(--sample-rate, every matching --rate-override)`; the base rate is 0.01. An override key is a speed name or a band lower bound and oversamples scarce cells (classical, 2200+).
+- The rate depends only on (speed, band), so it is constant inside each cell. Within-cell comparisons (H2) need no weighting. When pooling across cells (H1 totals), weight each game by `1 / sample_rate`.
+- Filters: speeds blitz/rapid/classical, both Elos numeric, result 1-0 / 0-1 / 1/2-1/2, termination Normal or Time forfeit, no BOT accounts, at least 2 plies. Resignations and short games are **kept and flagged**, never dropped. Every rejection is counted by rule in the manifest.
+- Bands use the existing `BANDS` and `--band-by` (default `avg`).
+- `--limit` is for testing only and forces `complete=false`.
+
+**Output**: `.parquet` (pyarrow, explicit schema, zstd, 200k-row chunks) or CSV. `<out>.manifest.json` records the arguments, URL, git commit, UTC start/end, compressed bytes read, games seen/kept, rejections per rule, kept games per (speed, band), `complete` and the output's sha256. On a network or zstd error (including a truncated stream) the manifest has `complete=false` and the exit status is non-zero. Check `complete` before analysing.
+
+**Columns**
+
+| Column | Meaning |
+|:--|:--|
+| `game_id`, `utc_date`, `source_month` | Lichess id, `YYYY-MM-DD`, dump month |
+| `speed`, `time_control` | blitz / rapid / classical; e.g. `180+0` |
+| `white`, `black`, `white_title`, `black_title` | players and titles (null if untitled) |
+| `white_elo`, `black_elo`, `band` | ratings and the band lower bound |
+| `result`, `termination` | `1-0` / `0-1` / `1/2-1/2`; `Normal` / `Time forfeit` |
+| `is_resignation` | Normal + decisive + last move not `#` |
+| `time_forfeit`, `is_tournament` | termination is a time forfeit; Event contains "tournament" |
+| `n_plies`, `eco`, `opening` | game length in plies, ECO code and name |
+| `first_move`, `black_reply`, `first10` | first two plies and the first 10 plies in SAN, with `?`/`!` marks and NAGs removed |
+| `sample_rate` | the rate this game was sampled at |
+
+`data/legacy/games_old.csv` is the previous sample. It drops resignations and must not be used for H1/H2.
+
 ## 🧪 How we test the ideas
 
 1. **Collect and validate** game counts and ECO opening definitions.
