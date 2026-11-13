@@ -1,0 +1,13 @@
+# Final conclusion — White Lies
+
+**1. Is White's advantage statistically detectable?** In the validated sample of 836,070 eligible Lichess games played March 1–31, 2025, the inverse-probability-weighted White score is **51.776%**, with a **95% bootstrap interval of 51.653%–51.899%**. The one-sided draw-preserving Monte Carlo p-value is **9.999e-05**, the resolution limit of 10,000 simulations. We reject the primary 50% null. The raw sample score is 51.900%; its exact conditional p=2.159e-279 is an unweighted cross-check. Among 327,230 games with ratings within 25 Elo, the weighted score is 51.819% (CI 51.637%–52.004%). Equal-rating standardization gives 51.886% (shared-player dyadic CI 51.707%–52.064%; asymptotic p=3.951e-95). The direction survives these adjustments.
+
+**2. Is it practically meaningful?** The primary excess is **1.776 percentage points**, approximately 1.78 additional White points per 100 games relative to equal scoring. It is a modest association, not a guarantee for any individual game. Statistical detectability is stronger than evidence for a universal magnitude: restricting to games lasting at least 40 plies reduces the score to 50.769%.
+
+**3. Does playing strength matter?** Weighted band scores range from 51.370% in band 1800 to 52.336% in band 2200. The pattern is not monotonic. Sparse high-rated classical cells remain inconclusive. These are categories of platform ratings, not controlled comparisons of identical players.
+
+**4. Does time control matter?** Pooled estimates are blitz 51.776% (95% CI 51.637%–51.915%); classical 51.793% (95% CI 51.402%–52.182%); rapid 51.776% (95% CI 51.523%–52.024%). They are very similar; these estimates do not demonstrate a general speed gradient or prove equivalence. Draw rates and rating compositions vary.
+
+**5. Does Black's first reply matter?** With at least 200 games per reply and bands >=1200, **14 of 35 cells** reject score equality and **15** reject full W/D/B equality after separate BH corrections. Tested replies cover 84.3% of all e4/d4 games. Median observed score range is 6.24 pp and median excess SD 1.20 pp. However, the near-equal-rating sensitivity leaves only 1/28 score rejections. Confounding, power, coverage and threshold sensitivity prevent a stable objective-defense ranking.
+
+**6. What does the study demonstrate?** White scores slightly above half in this sampled March population even after measured rating adjustment. Opening replies carry observational outcome associations in some cells. Neither result establishes causation, full-year behavior, or universal chess strategy. Repeated players, model assumptions, unverified Explorer dates and incomplete ECO reconciliation delimit the evidence.

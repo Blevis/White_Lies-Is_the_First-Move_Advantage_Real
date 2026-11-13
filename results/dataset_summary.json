@@ -1,0 +1,261 @@
+{
+  "provenance": {
+    "validated": true,
+    "checks": {
+      "complete": true,
+      "no_limit": true,
+      "path": true,
+      "argument_path": true,
+      "checksum": true,
+      "schema": true,
+      "row_count": true,
+      "accounting": true,
+      "source": true,
+      "rejection_rules": true,
+      "criteria": true,
+      "source_month": true,
+      "date_coverage": true,
+      "cell_counts": true,
+      "override_configuration": true,
+      "sample_rates": true,
+      "hash_selection": true
+    },
+    "sha256": "e055e8f921b3b242188c0493d57acc8fe83a2200ee0223e6cb817dc5a627ffaa",
+    "source_month": "2025-03",
+    "manifest": {
+      "args": {
+        "month": "2025-03",
+        "url": null,
+        "input": null,
+        "speeds": "blitz,rapid,classical",
+        "min_plies": 2,
+        "keep_terminations": "Normal,Time forfeit",
+        "band_by": "avg",
+        "sample_rate": 0.01,
+        "rate_override": "classical=0.10,2200=0.10,2500=0.10",
+        "limit": null,
+        "out": "data/games_2025-03.parquet",
+        "pgn_out": null
+      },
+      "url": "https://database.lichess.org/standard/lichess_db_standard_rated_2025-03.pgn.zst",
+      "git_commit": "e3948f179706ebb442f668514699b38395271697",
+      "source_month": "2025-03",
+      "rate_overrides": {
+        "speed": {
+          "classical": 0.1
+        },
+        "band": {
+          "2200": 0.1,
+          "2500": 0.1
+        }
+      },
+      "start_utc": "2026-11-12T20:50:31+00:00",
+      "end_utc": "2026-11-13T00:33:47+00:00",
+      "compressed_bytes_read": 31787738173,
+      "games_seen": 97512351,
+      "games_kept": 836070,
+      "games_not_sampled": 58972199,
+      "rejections": {
+        "speed": 37351463,
+        "rating": 0,
+        "result": 1310,
+        "termination": 188228,
+        "bot": 162871,
+        "min_plies": 210
+      },
+      "kept_per_speed_band": {
+        "blitz/0": 26890,
+        "blitz/1000": 40561,
+        "blitz/1200": 62059,
+        "blitz/1400": 82530,
+        "blitz/1600": 93163,
+        "blitz/1800": 81448,
+        "blitz/2000": 45144,
+        "blitz/2200": 174582,
+        "blitz/2500": 17505,
+        "classical/0": 1517,
+        "classical/1000": 4344,
+        "classical/1200": 9227,
+        "classical/1400": 15454,
+        "classical/1600": 13889,
+        "classical/1800": 7746,
+        "classical/2000": 2101,
+        "classical/2200": 283,
+        "classical/2500": 1,
+        "rapid/0": 14919,
+        "rapid/1000": 17695,
+        "rapid/1200": 23715,
+        "rapid/1400": 28729,
+        "rapid/1600": 27265,
+        "rapid/1800": 19617,
+        "rapid/2000": 7837,
+        "rapid/2200": 17336,
+        "rapid/2500": 513
+      },
+      "complete": true,
+      "error": null,
+      "output": "data/games_2025-03.parquet",
+      "output_sha256": "e055e8f921b3b242188c0493d57acc8fe83a2200ee0223e6cb817dc5a627ffaa"
+    },
+    "rows_on_disk": 836070,
+    "date_min": "2025-03-01",
+    "date_max": "2025-03-31",
+    "sampling_method": "deterministic MD5 game-ID Bernoulli-style sampling"
+  },
+  "cleaning": {
+    "input_rows": 836070,
+    "retained_rows": 836070,
+    "excluded_total": 0,
+    "rules": [
+      {
+        "rule": "missing_game_id",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "duplicate_id_after_first",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "invalid_ratings",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "invalid_result",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "invalid_date_or_month",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "invalid_speed",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "inconsistent_band",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "invalid_sample_rate",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "bot",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "invalid_termination",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "too_few_plies",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "missing_first_move",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "missing_black_reply",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "missing_player",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "same_player",
+        "flagged": 0,
+        "excluded": 0
+      },
+      {
+        "rule": "inconsistent_forfeit_flag",
+        "flagged": 0,
+        "excluded": 0
+      }
+    ]
+  },
+  "N": 836070,
+  "raw_metrics": {
+    "N": 836070,
+    "weight_total": 836070.0,
+    "W": 412047.0,
+    "D": 43748.0,
+    "B": 380275.0,
+    "score": 0.5190008013683065,
+    "white_win_rate": 0.49283792026983386,
+    "draw_rate": 0.05232576219694523,
+    "black_win_rate": 0.4548363175332209,
+    "decisive_white_win_rate": 0.5200499291954533
+  },
+  "weighted_metrics": {
+    "N": 836070,
+    "weight_total": 59802180.0,
+    "W": 29621880.0,
+    "D": 2682980.0,
+    "B": 27497320.0,
+    "score": 0.5177632320427115,
+    "white_win_rate": 0.4953311066586536,
+    "draw_rate": 0.04486425076811581,
+    "black_win_rate": 0.4598046425732306,
+    "decisive_white_win_rate": 0.5185975994061541
+  },
+  "mean_plies": 69.8958269044458,
+  "median_plies": 65.0,
+  "mean_move_pairs": 34.9479134522229,
+  "median_move_pairs": 32.5,
+  "elo_difference": {
+    "count": 836070.0,
+    "mean": -0.22087385027569462,
+    "std": 111.6459872873699,
+    "min": -1850.0,
+    "1%": -363.0,
+    "5%": -136.0,
+    "25%": -36.0,
+    "50%": 0.0,
+    "75%": 36.0,
+    "95%": 136.0,
+    "99%": 361.0,
+    "max": 1695.0
+  },
+  "unique_players": 567922,
+  "players_with_multiple_games": 296939,
+  "max_games_per_player": 227,
+  "missing_titles": {
+    "white_title": 822652,
+    "black_title": 822765
+  },
+  "terminations": {
+    "Normal": 665036,
+    "Time forfeit": 171034
+  },
+  "resignations_heuristic": 428665,
+  "short_games_under_10_plies": 8089,
+  "sample_rate_counts": {
+    "0.01": 571572,
+    "0.1": 264498
+  },
+  "explorer": {
+    "status": "unverified_legacy",
+    "rows": 180,
+    "nested_totals_nonnegative": true,
+    "has_date_columns": false,
+    "reason": "Missing original query-period sidecar and response cache; dates cannot be authenticated",
+    "comparison_permitted": false,
+    "rating_semantics": "Game sample uses floor of mean opponent Elo; Explorer alignment unverified"
+  }
+}

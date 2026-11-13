@@ -1,0 +1,2 @@
+source,status,comparison,reason,primary_period,explorer_period,rating_alignment
+Archived Explorer,unverified_legacy,unavailable,Missing original query-period sidecar and response cache; dates cannot be authenticated,2025-03,unverified,unverified; no numeric comparison made

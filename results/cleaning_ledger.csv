@@ -1,0 +1,17 @@
+rule,flagged,excluded
+missing_game_id,0,0
+duplicate_id_after_first,0,0
+invalid_ratings,0,0
+invalid_result,0,0
+invalid_date_or_month,0,0
+invalid_speed,0,0
+inconsistent_band,0,0
+invalid_sample_rate,0,0
+bot,0,0
+invalid_termination,0,0
+too_few_plies,0,0
+missing_first_move,0,0
+missing_black_reply,0,0
+missing_player,0,0
+same_player,0,0
+inconsistent_forfeit_flag,0,0

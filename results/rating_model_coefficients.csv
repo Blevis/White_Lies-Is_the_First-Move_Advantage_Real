@@ -1,0 +1,33 @@
+term,coefficient
+C(cell)[blitz/0],0.5191983638748213
+C(cell)[blitz/1000],0.5207617984131386
+C(cell)[blitz/1200],0.517903891864296
+C(cell)[blitz/1400],0.5188591258248202
+C(cell)[blitz/1600],0.5166425749716143
+C(cell)[blitz/1800],0.5135194659924522
+C(cell)[blitz/2000],0.516544699378294
+C(cell)[blitz/2200],0.5229196391562865
+C(cell)[blitz/2500],0.5234241823471875
+C(cell)[classical/0],0.5240635474141849
+C(cell)[classical/1000],0.5130919002551815
+C(cell)[classical/1200],0.5164104464679331
+C(cell)[classical/1400],0.518890327847396
+C(cell)[classical/1600],0.51945242736846
+C(cell)[classical/1800],0.5158098005655543
+C(cell)[classical/2000],0.5329051784939568
+C(cell)[classical/2200],0.531420823147746
+C(cell)[rapid/0],0.5212124691810007
+C(cell)[rapid/1000],0.5212639566956769
+C(cell)[rapid/1200],0.5182275887645256
+C(cell)[rapid/1400],0.5134601638533052
+C(cell)[rapid/1600],0.5208132015905992
+C(cell)[rapid/1800],0.5128361276721369
+C(cell)[rapid/2000],0.5228748427129233
+C(cell)[rapid/2200],0.5306726780153053
+C(cell)[rapid/2500],0.5006256949767993
+"cr(elo_difference, knots=(-200, -50, 0, 50, 200), constraints='center')[0]",-0.16570337221155285
+"cr(elo_difference, knots=(-200, -50, 0, 50, 200), constraints='center')[1]",-0.003772332291717362
+"cr(elo_difference, knots=(-200, -50, 0, 50, 200), constraints='center')[2]",0.054653175394392406
+"cr(elo_difference, knots=(-200, -50, 0, 50, 200), constraints='center')[3]",0.08305622763613485
+"cr(elo_difference, knots=(-200, -50, 0, 50, 200), constraints='center')[4]",0.18381561923292367
+"cr(elo_difference, knots=(-200, -50, 0, 50, 200), constraints='center')[5]",0.23664245180137122
