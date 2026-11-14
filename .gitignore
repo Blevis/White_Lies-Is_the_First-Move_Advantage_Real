@@ -12,3 +12,8 @@ data/raw/
 *.pgn.zst
 .venv/
 .pytest_cache/
+
+# MkDocs build, isolated docs environment, and browser verification
+site/
+.venv-docs/
+artifacts/

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="680" viewBox="0 0 720 680" fill="none">
+<title>A white knight and a black pawn on an abstract chessboard</title>
+<desc>An original decorative chess composition. The pieces do not depict a studied opening position.</desc>
+<defs>
+ <linearGradient id="board" x1="230" y1="200" x2="600" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#344150"/><stop offset="1" stop-color="#0b1016"/></linearGradient>
+ <linearGradient id="ivory" x1="270" y1="170" x2="435" y2="500" gradientUnits="userSpaceOnUse"><stop stop-color="#fffdf4"/><stop offset=".45" stop-color="#e2ded0"/><stop offset="1" stop-color="#928c7c"/></linearGradient>
+ <linearGradient id="black" x1="460" y1="235" x2="554" y2="430" gradientUnits="userSpaceOnUse"><stop stop-color="#53606c"/><stop offset=".4" stop-color="#26323e"/><stop offset="1" stop-color="#0c121b"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#c6a667" stop-opacity=".15"/><stop offset="1" stop-color="#c6a667" stop-opacity="0"/></radialGradient>
+ <pattern id="checks" width="140" height="140" patternUnits="userSpaceOnUse"><rect width="140" height="140" fill="#17212c"/><path d="M0 0h70v70H0zM70 70h70v70H70z" fill="#34404d"/></pattern>
+ <filter id="shadow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="15"/></filter>
+</defs>
+<ellipse cx="361" cy="310" rx="340" ry="310" fill="url(#glow)"/>
+<circle cx="361" cy="334" r="247" stroke="#c6a667" stroke-opacity=".15"/>
+<circle cx="361" cy="334" r="290" stroke="#c6a667" stroke-opacity=".07" stroke-dasharray="2 10"/>
+<path d="M68 424L354 259 652 431 366 596z" fill="url(#board)" stroke="#64707b" stroke-opacity=".3"/>
+<path d="M68 424v19l298 173 286-165v-20L366 596z" fill="#0d131c" stroke="#3b4651" stroke-opacity=".6"/>
+<g transform="matrix(.5196 .3 -.5196 .3 354 259)"><rect width="560" height="560" fill="url(#checks)" opacity=".7"/><rect x="210" y="280" width="70" height="70" fill="#c6a667" fill-opacity=".5" stroke="#c6a667" stroke-width="2"/></g>
+<ellipse cx="499" cy="429" rx="62" ry="14" fill="#000" opacity=".5" filter="url(#shadow)"/>
+<g stroke="#65717c" stroke-width="1.2">
+ <path d="M460 409c12-13 22-37 24-69h30c1 32 13 56 24 69z" fill="url(#black)"/>
+ <ellipse cx="499" cy="331" rx="27" ry="10" fill="url(#black)"/>
+ <circle cx="499" cy="297" r="29" fill="url(#black)"/>
+ <path d="M461 408h76l9 17-5 12h-84l-5-12z" fill="url(#black)"/>
+ <path d="M455 426h88" stroke="#7a8791" stroke-opacity=".5"/>
+</g>
+<ellipse cx="316" cy="489" rx="104" ry="21" fill="#000" opacity=".6" filter="url(#shadow)"/>
+<g fill="url(#ivory)" stroke="#f5f3ee" stroke-opacity=".45" stroke-width="1.2">
+ <path d="M244 442c24-20 43-48 47-77l-26 15-29-20 11-41 35-51 1-49 29 20c54 7 94 49 101 102 5 44-18 77-24 101z"/>
+ <path d="M281 268l-18 45 34 15-6 37M312 239c40 36 55 75 44 112-9 30-31 61-43 91" fill="none" stroke="#706c63" stroke-opacity=".6" stroke-width="3"/>
+ <path d="M283 219l9 30 20-10" fill="#fffdf4"/>
+ <path d="M244 442h146l8 17H236z"/>
+ <path d="M238 459h158l14 24-6 13H226l-6-13z"/>
+</g>
+<path d="M238 477h156M235 487h164" stroke="#6e6b61" stroke-opacity=".65"/>
+<path d="M263 341l16 6" stroke="#746e60" stroke-width="3" stroke-linecap="round"/>
+<circle cx="297" cy="282" r="5" fill="#252a2f"/>
+<path d="M333 259l16 8m-8 6 17 10m-9 6 18 12m-12 5 17 14" stroke="#756f62" stroke-opacity=".5" stroke-width="3"/>
+<path d="M141 187h62M172 156v62M567 517h38M586 498v38" stroke="#c6a667" stroke-opacity=".45"/>
+<path d="M178 550h62M497 211h50" stroke="#c6a667" stroke-opacity=".6"/>
+<circle cx="178" cy="550" r="3" fill="#c6a667"/><circle cx="547" cy="211" r="3" fill="#c6a667"/>
+</svg>

@@ -1,0 +1,109 @@
+site_name: WHITE LIES
+site_description: An empirical study of chess's first-move scoring advantage in 836,070 sampled Lichess games from March 2025.
+# Pages is not enabled yet. The deployment workflow supplies its verified base_url.
+site_url: !ENV [SITE_URL, '']
+repo_url: https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real
+repo_name: Blevis / White Lies
+edit_uri: blob/main/docs/
+strict: true
+use_directory_urls: true
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  font: false
+  logo: assets/images/mark.svg
+  favicon: assets/images/mark.svg
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.view
+    - content.tabs.link
+    - toc.follow
+plugins:
+  - search
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.critic
+  - pymdownx.keys
+extra_css:
+  - assets/css/site.css
+  - assets/css/explorer.css
+extra_javascript:
+  - assets/js/site.js
+  - assets/js/explorer.js
+extra:
+  generator: false
+copyright: March 2025 study · Observational evidence · Open research
+nav:
+  - Home: index.md
+  - The Research:
+      - Research question: research/question.md
+      - Hypothesis H1: research/h1.md
+      - Hypothesis H2: research/h2.md
+      - Findings and interpretation: research/findings.md
+      - Limitations: research/limitations.md
+      - Full research report: research/report.md
+  - Explore:
+      - Data explorer: explore/index.md
+      - Visualizations: explore/figures.md
+      - Opening reply analysis: explore/openings.md
+  - Methodology:
+      - Dataset and provenance: methodology/data.md
+      - Sampling and exclusions: methodology/sampling.md
+      - Statistical methodology: methodology/statistics.md
+      - Confidence intervals and testing: methodology/uncertainty.md
+      - Rating adjustments: methodology/ratings.md
+      - Robustness checks: methodology/robustness.md
+  - Reproducibility:
+      - Installation: reproducibility/installation.md
+      - Running the analysis: reproducibility/running.md
+      - Notebook guide: reproducibility/notebook.md
+      - Output files: reproducibility/outputs.md
+      - Validation and testing: reproducibility/validation.md
+  - Project:
+      - Research sources: project/sources.md
+      - Repository structure: project/structure.md
+      - Research audit: project/audit.md
+      - Website maintenance: project/website.md
+      - About and contributors: project/about.md
+hooks:
+  - scripts/docs_hook.py

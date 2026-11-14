@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block extrahead %}
+  {{ super() }}
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WHITE LIES">
+  <meta property="og:title" content="{{ page.title | default(config.site_name) | e }} — WHITE LIES">
+  <meta property="og:description" content="{{ (page.meta.description | default(config.site_description) if page else config.site_description) | e }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% if config.site_url and page %}
+    <meta property="og:url" content="{{ page.canonical_url }}">
+    <meta property="og:image" content="{{ config.site_url }}assets/images/social-card.png">
+    <meta property="og:image:alt" content="White Lies: 836,070 sampled games; weighted White score 51.776%.">
+  {% endif %}
+  <link rel="preload" href="{{ 'assets/fonts/manrope-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ 'assets/fonts/fraunces-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+{% endblock %}
