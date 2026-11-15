@@ -56,19 +56,16 @@ The last command checks internal pages, anchors and local assets in the built si
 
 ## GitHub Pages
 
-The repository's default branch is **`main`**. At the implementation audit on **November 14, 2026**, the GitHub API reported `has_pages: false`; the Pages endpoint returned 404. No live site URL is claimed.
+The repository's default branch is **`main`**. The [live publication](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/) was verified on **November 15, 2026**. The [successful deployment run](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/actions/runs/43626779084) built and deployed commit `da103f682cb76b3778f098df303fae4f732c3ffd`. The earlier November 14 audit correctly recorded Pages as disabled; the implementation was subsequently merged and deployed.
 
-The workflow in `.github/workflows/docs.yml` validates pull requests and builds deployments on pushes to `main` or manual runs from `main`. It uses the official checkout, Python setup, Pages configuration, artifact upload and Pages deployment actions. Only the deployment job has Pages write and identity-token permissions. Its concurrency group prevents competing deployments.
+The workflow in `.github/workflows/docs.yml` validates pull requests and builds deployments on pushes to `main` or manual runs from `main`. It uses the official checkout, Python setup, Pages configuration, artifact upload and Pages deployment actions. Only the deployment job has Pages write and identity-token permissions. Its concurrency group prevents competing Actions deployments.
 
-To enable the first deployment:
+!!! warning "Finish the Pages publishing-source setting"
+    The Pages API currently reports `build_type: legacy`, with `main` and `/` as its source, although the custom deployment succeeded. In **Settings → Pages → Build and deployment → Source**, select **GitHub Actions**. This prevents branch-based publishing from competing with the custom workflow. The attempted API update returned HTTP 404 with the available credential, so the setting must be changed in the repository UI by an authorized maintainer.
 
-1. In the GitHub repository, open **Settings → Pages → Build and deployment** and select **GitHub Actions**.
-2. Merge the website implementation into `main`, or run the documentation workflow from `main` once it contains these files.
-3. Confirm that the `github-pages` environment permits deployment from `main` and review the workflow's successful deployment URL.
+Confirm that the `github-pages` environment permits deployment from `main`. Future website changes are published after a successful workflow on `main`; local changes still need to be committed and merged before they appear online.
 
-With GitHub's standard project-site configuration, the expected address is `https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/`. This is an **expected address, not a verified deployment**.
-
-Canonical and social URLs are deliberately omitted from local and pull-request builds. The deployment workflow passes the **verified `base_url` output of `actions/configure-pages`** through `SITE_URL`. It accommodates a custom domain without hardcoding an unverified address. For a verified deployment, a local release preview can use that same `SITE_URL` value.
+The verified canonical address is `https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/`. The configuration now uses that verified address as its default. During deployment, **`actions/configure-pages` supplies the current `base_url`** through `SITE_URL`, accommodating any subsequently configured custom domain. Local previews retain canonical links to the public publication; to test another deployment prefix, set `SITE_URL` explicitly.
 
 The workflow uploads `site/`; it never commits compiled pages or raw games. It installs documentation dependencies only and does not run the expensive analysis. See GitHub's [official custom Pages workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 

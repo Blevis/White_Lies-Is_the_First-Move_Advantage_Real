@@ -8,7 +8,7 @@ An empirical chess study and interactive research publication based on **836,070
 
 The Material for MkDocs publication includes an editorial homepage, H1/H2 findings, a filterable dashboard, an explanatory opening board, eleven annotated scientific figures, and synchronized report and audit pages. Browser interactions read recorded aggregate outputs; they do not run new tests or publish game-level records.
 
-**Deployment:** configured for GitHub Pages, but not yet published. On November 14, 2026, the repository API reported Pages disabled. The expected standard project address is `https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/`; it is **not a verified live URL**. Enable **Settings → Pages → GitHub Actions**, then merge the implementation into `main`. The workflow obtains the canonical URL from GitHub's Pages configuration. See [website maintenance](docs/project/website.md) for deployment and customization details.
+**Live website:** [White Lies research publication](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/), verified on November 15, 2026 after the `main` deployment succeeded. **One repository setting remains:** select **Settings → Pages → Build and deployment → Source → GitHub Actions**. The API currently reports branch-based publishing (`legacy`, `main` / root); switching prevents it from competing with the configured Actions deployment. The available API credential returned HTTP 404 when attempting that setting change. See [website maintenance](docs/project/website.md) for the deployment record and customization details.
 
 Preview locally with Python 3.11 or newer:
 
@@ -29,7 +29,7 @@ python -m mkdocs build --strict
 python scripts/check_site.py
 ```
 
-Compiled `site/` output is ignored by Git and uploaded only as a deployment artifact.
+Compiled `site/` output is ignored by Git and uploaded only as a deployment artifact. The [website implementation report](reports/WEBSITE_IMPLEMENTATION.md) includes the complete publication file tree, executed checks, browser screenshots and remaining deployment setting.
 
 ## The finding
 

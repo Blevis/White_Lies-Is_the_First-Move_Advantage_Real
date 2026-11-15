@@ -1,7 +1,7 @@
 site_name: WHITE LIES
 site_description: An empirical study of chess's first-move scoring advantage in 836,070 sampled Lichess games from March 2025.
-# Pages is not enabled yet. The deployment workflow supplies its verified base_url.
-site_url: !ENV [SITE_URL, '']
+# Verified live on 2026-11-15; the workflow overrides this with Pages base_url.
+site_url: !ENV [SITE_URL, 'https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/']
 repo_url: https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real
 repo_name: Blevis / White Lies
 edit_uri: blob/main/docs/

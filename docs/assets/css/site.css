@@ -153,3 +153,7 @@ body:has(.wl-home) .md-footer {margin-top:0;}
 @media(max-width:600px){.wl-home .wl-interval{font-size:22px;}}
 /* Preserve code-token contrast against the warm light reading surface. */
 [data-md-color-scheme="default"] {--md-code-hl-number-color:#a42323;--md-code-hl-constant-color:#6045bd;}
+/* Keep the decorative hero within the two-column tablet layout. */
+@media (min-width:761px) and (max-width:1100px) {
+  .wl-hero-art img {width:100%; margin-left:0;}
+}
