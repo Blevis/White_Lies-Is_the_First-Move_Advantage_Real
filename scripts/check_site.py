@@ -23,10 +23,19 @@ class Document(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ids, self.refs, self.text = set(), [], []
         self.canonical = None
+        self.metric_values = []
+        self._metric_depth = 0
+        self._metric_text = []
         self.feed(text)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if self._metric_depth:
+            if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}:
+                self._metric_depth += 1
+        elif "wl-metric-value" in attrs.get("class", "").split():
+            self._metric_depth = 1
+            self._metric_text = []
         if tag == "link" and attrs.get("rel") == "canonical":
             self.canonical = attrs.get("href")
         if attrs.get("id"):
@@ -42,6 +51,14 @@ class Document(HTMLParser):
 
     def handle_data(self, data):
         self.text.append(data)
+        if self._metric_depth:
+            self._metric_text.append(data)
+
+    def handle_endtag(self, tag):
+        if self._metric_depth:
+            self._metric_depth -= 1
+            if not self._metric_depth:
+                self.metric_values.append(re.sub(r"\s+", "", "".join(self._metric_text)))
 
 
 def check_site(site: Path, prefix: str | None = None) -> tuple[list[str], dict]:
@@ -100,7 +117,7 @@ def check_site(site: Path, prefix: str | None = None) -> tuple[list[str], dict]:
         errors.append("Missing homepage index.html")
     else:
         text = re.sub(r"\s+", "", "".join(homepage.text))
-        for required in ("836,070", "51.776", "1.776", "14", "35", "March2025"):
+        for required in ("March2025",):
             if required not in text:
                 errors.append(f"Homepage missing published research value: {required}")
     for path in site.rglob("*"):
@@ -128,6 +145,20 @@ def check_site(site: Path, prefix: str | None = None) -> tuple[list[str], dict]:
         inspect(payload)
         if payload["provenance"]["sampled_games"] != 836070:
             errors.append("Aggregate sample count differs from publication")
+        if homepage:
+            primary = payload["h1"]["summary"]["primary"]
+            h2 = payload["h2"]["summary"]
+            expected_metrics = [
+                f"{primary['N']:,}",
+                f"{100 * primary['score']:.3f}%",
+                f"{primary['difference_pp']:+.3f}pp",
+                f"{h2['score_rejections']}/{h2['tested_cells']}",
+            ]
+            if homepage.metric_values != expected_metrics:
+                errors.append(
+                    "Homepage metric cards differ from validated aggregate outputs: "
+                    f"expected {expected_metrics!r}, found {homepage.metric_values!r}"
+                )
     for original in (ROOT / "reports").glob("*.md"):
         if original.name not in {"FINAL_RESEARCH_REPORT.md", "FINAL_CONCLUSION.md", "implementation_audit.md", "COMPLETION_CHECKLIST.md"}:
             continue

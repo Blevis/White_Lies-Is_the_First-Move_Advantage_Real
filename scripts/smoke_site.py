@@ -67,6 +67,7 @@ def run(url, args):
                                              args=["--disable-dev-shm-usage"])
         context = browser.new_context(viewport={"width": 1440, "height": 1000}, reduced_motion="reduce")
         page = context.new_page()
+        page.set_default_timeout(10000)
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.on("response", lambda response: failed_resources.append(f"{response.status} {response.url}")
                 if response.status >= 400 and response.url.startswith(url) else None)
@@ -81,8 +82,9 @@ def run(url, args):
         page.locator('label[title="Switch to dark mode"]:visible').click()
         expect(page.locator("body")).to_have_attribute("data-md-color-scheme", "slate")
         checks.append("Theme switching")
-        page.locator('[for="__search"].md-header__button').click()
-        page.get_by_role("textbox", name="Search", exact=True).fill("bootstrap")
+        search = page.get_by_role("textbox", name="Search", exact=True)
+        search.click()
+        search.press_sequentially("bootstrap", delay=60)
         expect(page.locator(".md-search-result__item").first).to_be_visible(timeout=15000)
         page.keyboard.press("Escape")
         checks.append("Search returns research results")
@@ -92,28 +94,28 @@ def run(url, args):
         h1 = root.locator("[data-h1-panel]")
         expect(h1.locator("[data-kpis]")).to_contain_text("836,070")
         expect(h1.locator("[data-chart-primary]")).to_contain_text("51.776%")
-        h1.get_by_label("Estimator", exact=True).select_option("raw")
+        h1.get_by_role("combobox", name="Estimator", exact=True).select_option("raw")
         expect(h1.locator("[data-chart-primary]")).to_contain_text("51.900%")
-        h1.get_by_label("Time control", exact=True).select_option("classical")
-        expect(h1.get_by_label("Estimator", exact=True)).to_have_value("weighted")
-        expect(h1.locator('option[value="raw"]')).to_be_disabled()
+        h1.get_by_role("combobox", name="Time control", exact=True).select_option("classical")
+        expect(h1.get_by_role("combobox", name="Estimator", exact=True)).to_have_value("weighted")
+        expect(h1.locator('option[value="raw"]')).to_have_attribute("disabled", "")
         expect(root.locator("[data-status]")).to_contain_text("Unweighted subgroup intervals are unavailable")
-        h1.get_by_label("Mean-rating band", exact=True).select_option("2500")
+        h1.get_by_role("combobox", name="Mean-rating band", exact=True).select_option("2500")
         expect(h1.locator("[data-h1-status]")).to_contain_text("Descriptive only")
         h1.locator("[data-reset]").click()
         expect(h1.locator("[data-chart-primary]")).to_contain_text("51.776%")
         checks.append("H1 weighted/raw, unavailable raw subgroup, sparse group, reset")
-        root.get_by_label("View results", exact=True).select_option("h2")
+        root.get_by_role("combobox", name="View results", exact=True).select_option("h2")
         expect(h1).to_be_hidden()
         opening = root.locator("[data-opening-module]")
         expect(opening.locator(".wl-square")).to_have_count(64)
         expect(opening.locator('[data-square="a1"]')).to_have_class("wl-square wl-square-dark")
         expect(opening.locator('[data-square="e4"]')).to_have_attribute("data-piece", "wP")
-        opening.get_by_label("Black’s immediate reply", exact=True).select_option("c5")
+        opening.get_by_role("combobox", name="Black’s immediate reply", exact=True).select_option("c5")
         expect(opening.locator('[data-square="c5"]')).to_have_attribute("data-piece", "bP")
         expect(opening.locator('[data-square="c7"]')).to_have_attribute("data-piece", "")
-        opening.get_by_label("White’s first move", exact=True).select_option("d4")
-        opening.get_by_label("Black’s immediate reply", exact=True).select_option("Nf6")
+        opening.get_by_role("combobox", name="White’s first move", exact=True).select_option("d4")
+        opening.get_by_role("combobox", name="Black’s immediate reply", exact=True).select_option("Nf6")
         expect(opening.locator('[data-square="d4"]')).to_have_attribute("data-piece", "wP")
         expect(opening.locator('[data-square="d2"]')).to_have_attribute("data-piece", "")
         expect(opening.locator('[data-square="e2"]')).to_have_attribute("data-piece", "wP")
@@ -125,20 +127,20 @@ def run(url, args):
         expect(opening.locator('[data-square="g8"]')).to_have_attribute("data-piece", "bN")
         opening.locator("[data-board-show]").click()
         expect(opening.locator('[data-square="f6"]')).to_have_attribute("data-piece", "bN")
-        opening.get_by_label("Search tested reply notation", exact=True).fill("Nf6")
+        opening.get_by_role("searchbox", name="Search tested reply notation", exact=True).fill("Nf6")
         expect(opening.locator("[data-reply-table] [data-show-reply]")).to_have_count(1)
-        opening.get_by_label("Search tested reply notation", exact=True).fill("")
+        opening.get_by_role("searchbox", name="Search tested reply notation", exact=True).fill("")
         opening.locator('[data-sort="N"]').click()
         expect(opening.locator('[data-sort="N"]').locator("..")).to_have_attribute("aria-sort", "ascending")
-        opening.get_by_label("Time control", exact=True).select_option("classical")
-        opening.get_by_label("Mean-rating band", exact=True).select_option("2500")
+        opening.get_by_role("combobox", name="Time control", exact=True).select_option("classical")
+        opening.get_by_role("combobox", name="Mean-rating band", exact=True).select_option("2500")
         expect(opening.locator("[data-reply-chart] .wl-empty")).to_be_visible()
-        expect(opening.get_by_label("Black’s immediate reply", exact=True)).to_be_disabled()
+        expect(opening.get_by_role("combobox", name="Black’s immediate reply", exact=True)).to_be_disabled()
         expect(opening.locator("[data-reply-table] [data-show-reply]")).to_have_count(0)
-        opening.get_by_label("Mean-rating band", exact=True).select_option("0")
+        opening.get_by_role("combobox", name="Mean-rating band", exact=True).select_option("0")
         expect(opening.locator("[data-reply-chart]")).to_contain_text("excludes mean-rating bands below 1200")
         checks.append("H2 filters, both openings, legal pawn/knight moves, board reset, table search/sort, unavailable cells")
-        root.get_by_label("View results", exact=True).focus()
+        root.get_by_role("combobox", name="View results", exact=True).focus()
         page.keyboard.press("ArrowUp")
         page.keyboard.press("Tab")
         assert page.evaluate("document.activeElement !== document.body"), "Keyboard focus was lost"
@@ -172,6 +174,30 @@ def run(url, args):
         expect(failure_page.locator("[data-wl-explorer]")).to_have_attribute("data-wl-ready", "true")
         checks.append("Fetch failure explains unavailable data; retry recovers")
         failure_context.close()
+        if args.axe_file:
+            accessibility = []
+            for width, paths in ((1440, ("", "explore/", "research/report/", "methodology/statistics/")),
+                                 (390, ("", "explore/"))):
+                page.set_viewport_size({"width": width, "height": 960})
+                for scheme in ("slate", "default"):
+                    for path in paths:
+                        page.goto(url + path, wait_until="networkidle")
+                        current = page.locator("body").get_attribute("data-md-color-scheme")
+                        if current != scheme:
+                            target = "light" if scheme == "default" else "dark"
+                            page.locator(f'label[title="Switch to {target} mode"]:visible').click()
+                        page.add_script_tag(path=str(args.axe_file.resolve()))
+                        result = page.evaluate("""async () => await axe.run(document, {
+                            runOnly: {type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa','wcag22aa']}
+                        })""")
+                        violations = [{"id": v["id"], "impact": v["impact"],
+                                       "nodes": [{"target": n["target"], "summary": n["failureSummary"]}
+                                                 for n in v["nodes"]]} for v in result["violations"]]
+                        accessibility.append({"page": path, "width": width, "scheme": scheme,
+                                              "violations": violations})
+            (artifacts / "accessibility-results.json").write_text(json.dumps(accessibility, indent=2) + "\n")
+            assert not any(item["violations"] for item in accessibility), "Accessibility violations; see accessibility-results.json"
+            checks.append("axe WCAG A/AA checks: four desktop pages in both themes; home/explorer at 390 px in both themes")
         assert not errors, f"JavaScript errors: {errors}"
         assert not failed_resources, f"Failed local resources: {failed_resources}"
         checks.append("No JavaScript exceptions or local HTTP failures")
@@ -187,6 +213,7 @@ def main():
     parser.add_argument("--url", help="Use an existing server instead of the temporary subpath server")
     parser.add_argument("--base-path", default=PREFIX, help="Project subpath for the temporary server")
     parser.add_argument("--browser-executable", default=os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE"))
+    parser.add_argument("--axe-file", type=Path, help="Optional local axe-core JavaScript for WCAG checks")
     parser.add_argument("--artifacts", type=Path, default=ROOT / "artifacts/browser")
     args = parser.parse_args()
     if args.url:
