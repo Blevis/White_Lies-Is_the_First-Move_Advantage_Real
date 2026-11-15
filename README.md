@@ -1,79 +1,142 @@
-# WHITE LIES — Is the First-Move Advantage Real?
+<div align="center">
 
-An empirical chess study and interactive research publication based on **836,070 sampled Lichess games played in March 2025**. The project combines an auditable Python analysis, an executed notebook, and a static MkDocs website with an aggregate-data explorer.
+<img src="assets/readme-hero.svg" alt="White Lies — Is the First-Move Advantage Real? | Chess × Data × Probability" width="100%" />
 
-[Research documentation](docs/index.md) · [Full scientific report](reports/FINAL_RESEARCH_REPORT.md) · [Methodology](docs/methodology/statistics.md) · [Reproduction guide](docs/reproducibility/installation.md)
+<br />
 
-## Research website
+[![Explore live website](https://img.shields.io/badge/EXPLORE-LIVE%20RESEARCH%20WEBSITE-c3e4b0?style=for-the-badge&labelColor=101e32&logo=githubpages&logoColor=white)](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/)
+[![Scientific report](https://img.shields.io/badge/READ-SCIENTIFIC%20REPORT-d9c69b?style=for-the-badge&labelColor=101e32&logoColor=white)](reports/FINAL_RESEARCH_REPORT.md)
+[![Reproduce](https://img.shields.io/badge/RUN-REPRODUCIBLE%20ANALYSIS-bacbdf?style=for-the-badge&labelColor=101e32&logoColor=white)](docs/reproducibility/installation.md)
 
-The Material for MkDocs publication includes an editorial homepage, H1/H2 findings, a filterable dashboard, an explanatory opening board, eleven annotated scientific figures, and synchronized report and audit pages. Browser interactions read recorded aggregate outputs; they do not run new tests or publish game-level records.
+**Chess × Data × Probability**
 
-**Live website:** [White Lies research publication](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/), verified on November 15, 2026 after the `main` deployment succeeded. **One repository setting remains:** select **Settings → Pages → Build and deployment → Source → GitHub Actions**. The API currently reports branch-based publishing (`legacy`, `main` / root); switching prevents it from competing with the configured Actions deployment. The available API credential returned HTTP 404 when attempting that setting change. See [website maintenance](docs/project/website.md) for the deployment record and customization details.
+*An evidence-driven investigation of whether playing White confers a measurable advantage — and how Black's first reply relates to the outcome.*
 
-Preview locally with Python 3.11 or newer:
+[**🌐 Interactive publication**](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/) ·
+[**📊 Explore findings**](docs/index.md) ·
+[**📖 Methodology**](docs/methodology/statistics.md) ·
+[**🔬 Reproducibility**](docs/reproducibility/installation.md)
 
-```bash
-python3 -m venv .venv-docs
-source .venv-docs/bin/activate
-python -m pip install -r requirements-docs.txt
-python -m mkdocs serve
+</div>
+
+---
+
+## At a glance
+
+| ♟️ Games sampled | ♔ Weighted White score | ↗ Advantage over 50% | 🎯 H2 score-spread signals |
+| :---: | :---: | :---: | :---: |
+| **836,070** | **51.776%** | **+1.776 pp** | **14 / 35 cells** |
+| March 2025 · Lichess | 95% CI: 51.653–51.899% | Weighted eligible population | BH-adjusted; observational |
+
+> **The headline:** White's expected score is statistically above 50% in this March 2025 Lichess sample. This is an *observational finding*, not proof that moving first causes the difference. Black-reply associations exist in some strata but are less robust when player ratings are closely matched.
+
+**[→ Open the live White Lies website](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/)** to browse the research narrative, aggregate explorer, figures, methods and audit.
+
+## The research questions
+
+| Hypothesis | What we tested | Headline finding |
+| --- | --- | --- |
+| **H1 · First-move advantage** | Is White's weighted expected score greater than 50%, overall and across speed/rating groups? | **51.776%** overall; one-sided Monte Carlo **p = 9.999 × 10⁻⁵** (10,000-simulation resolution limit). |
+| **H2 · Black's immediate reply** | After **1.e4** or **1.d4**, do reply choices differ in White/Draw/Black outcomes and White-score spread within speed/rating strata? | **14/35** eligible cells show adjusted score-spread differences; **15/35** show differences in full W/D/B distributions. |
+
+### A critical distinction: score is not win rate
+
+White's expected score awards **1** for a win, **0.5** for a draw and **0** for a loss:
+
+```text
+White score = (White wins + 0.5 × draws) / games
 ```
 
-On Windows PowerShell, create the environment with `py -3 -m venv .venv-docs` and activate it with `.\.venv-docs\Scripts\Activate.ps1`. Open the address printed by MkDocs, normally `http://127.0.0.1:8000/`.
+Sampling weights are **1 / sample_rate**. Reported *N* values below are observed sampled games, **not** weighted totals.
 
-Website dependencies are separate from the scientific requirements. The build hook copies final figures and reports and exports compact, source-hashed aggregate JSON. It never executes the analysis or notebook.
+## The evidence, visualized
 
-```bash
-python scripts/build_docs_assets.py --check
-python -m mkdocs build --strict
-python scripts/check_site.py
+<div align="center">
+  <a href="figures/h1_score_confidence_intervals.png">
+    <img src="figures/h1_score_confidence_intervals.png" alt="White score across the analysis with confidence intervals" width="92%" />
+  </a>
+  <p><sub><b>Figure 01.</b> White's expected score and uncertainty intervals. Select the figure to open it at full size.</sub></p>
+</div>
+
+### H1 · Consistency across time controls
+
+| Time control | Sampled games | Weighted White score | 95% confidence interval | Adjusted p-value |
+| :-- | --: | --: | :-- | --: |
+| **All eligible games** | **836,070** | **51.776%** | **51.653–51.899%** | **9.999e-05** |
+| Blitz | 623,882 | 51.776% | 51.637–51.915% | 0.0001267 |
+| Rapid | 157,626 | 51.776% | 51.523–52.024% | 0.0001267 |
+| Classical | 54,562 | 51.793% | 51.402–52.182% | 0.0001267 |
+
+**Sensitivity checks matter.** The near-equal-rating subset scores **51.819%** (95% CI **51.637–52.004%**; *n* = **327,230**). Equal-rating standardization estimates **51.886%** (dyadic CI **51.707–52.064%**). Restricting to games lasting **at least 40 plies** yields **50.769%** (95% CI **50.637–50.903%**), changing both the estimate and the population analyzed.
+
+### H2 · Does Black's first response matter?
+
+<div align="center">
+  <a href="figures/fig07_replies_e4.png">
+    <img src="figures/fig07_replies_e4.png" alt="Comparison of Black's immediate replies to 1.e4 in the 1600 rating band" width="92%" />
+  </a>
+  <p><sub><b>Figure 02.</b> An example of the response analysis after 1.e4, in the 1600 rating band.</sub></p>
+</div>
+
+Black-reply score differences have a **median within-cell range of 6.24 percentage points**, but those ranges reflect selected extremes and sampling uncertainty — **not objective opening strength**. Under near-equal-rating restrictions, just **1/28** eligible cells retains a score-spread rejection. The study therefore does **not** recommend one defense over another or establish causal opening effects.
+
+[**Full report →**](reports/FINAL_RESEARCH_REPORT.md) · [**Short conclusion →**](reports/FINAL_CONCLUSION.md) · [**Limitations →**](docs/research/limitations.md)
+
+## Explore the research website
+
+<div align="center">
+
+### [🌐 blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/)
+
+</div>
+
+Built with **Material for MkDocs**, the research publication brings together an editorial overview, H1/H2 explanations, an aggregate-data explorer with filters, a chess-opening explainer, **11 annotated scientific figures**, and synchronized reports and audit pages.
+
+The dashboard reads **precomputed, source-hashed aggregate results**. Interacting with it does *not* trigger new statistical tests or expose individual games.
+
+| Dive into… | Start here |
+| --- | --- |
+| Research narrative and findings | [Website homepage](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/) · [Research documentation](docs/index.md) |
+| Statistical methodology | [Methods and tests](docs/methodology/statistics.md) |
+| Full scientific write-up | [Final research report](reports/FINAL_RESEARCH_REPORT.md) |
+| Reproduction and validation | [Installation](docs/reproducibility/installation.md) · [Validation](docs/reproducibility/validation.md) |
+| Publication and audit | [Website maintenance](docs/project/website.md) · [Implementation audit](reports/implementation_audit.md) |
+
+## How the study works
+
+```mermaid
+flowchart LR
+  A[March 2025 Lichess rated games] --> B[Deterministic game-ID sampling]
+  B --> C[Manifest and record validation]
+  C --> D[Sampling weights + EDA]
+  D --> E[H1: White expected score]
+  D --> F[H2: Black reply comparisons]
+  E --> G[Robustness and uncertainty]
+  F --> G
+  G --> H[Reports + 11 figures]
+  H --> I[Static MkDocs publication]
 ```
 
-Compiled `site/` output is ignored by Git and uploaded only as a deployment artifact. The [website implementation report](reports/WEBSITE_IMPLEMENTATION.md) includes the complete publication file tree, executed checks, browser screenshots and remaining deployment setting.
+**Data provenance:** **97,512,351** source games scanned from the [Lichess rated-standard monthly archive](https://database.lichess.org/) for **March 1–31, 2025**; **836,070** games collected. The collector used a deterministic game-ID sample (**1%** baseline with **10%** overrides for classical and the 2200/2500 rating bands). It excluded BOT-titled games, invalid ratings/results, disallowed terminations and games shorter than two plies; legitimate short games and resignations are retained. The validated dataset had **zero additional exclusions**.
 
-## The finding
+**Methods:** 10,000-replicate sampling-aware Poisson multiplier bootstrap, draw-preserving multinomial null simulations, applicable exact decisive-game binomial checks, Benjamini–Hochberg adjustment, equal-rating spline regression and shared-player dyadic sensitivity. H2 uses rating bands **≥ 1200** with at least **200 observed games per reply**. [Read the exact methodology](docs/methodology/statistics.md).
 
-White scores **51.776%** (95% CI **51.653%–51.899%**) in the weighted eligible March 2025 Lichess population: **+1.776 percentage points** over 50%. One-sided Monte Carlo p=9.999e-05 (10,000-simulation resolution limit). Equal-rating standardization gives **51.886%** (dyadic CI 51.707%–52.064%).
+## Reproduce the analysis
 
-Black's immediate reply is associated with score differences in **14/35 eligible cells** after BH correction; full W/D/B distributions differ in 15. H2 weakens markedly under near-equal-rating restrictions. These are **observational associations**, not causal claims or defense recommendations.
+> [!IMPORTANT]
+> Reproduction is **offline** and expects the validated `data/games_2025-03.parquet` file **plus its adjacent manifest**. The full Lichess monthly archive is not bundled or downloaded automatically. Run commands from the repository root with Python 3.11+.
 
-Read the [full research report](reports/FINAL_RESEARCH_REPORT.md), [short conclusion](reports/FINAL_CONCLUSION.md), [audit](reports/implementation_audit.md), and [verification checklist](reports/COMPLETION_CHECKLIST.md).
-
-## Questions and outcome
-
-- **H1:** H0 expected White score =0.50; one-sided H1 >0.50. Test the weighted overall population, then rating and speed groups with multiplicity correction.
-- **H2:** Within first-move/speed/rating cells after 1.e4 or 1.d4, test equality of Black replies' W/D/B distributions and separately their score spread.
-
-A win is 1, draw 0.5, loss 0. White score is **(W + D/2)/N**, different from White win probability. Primary analysis uses weights **1/sample_rate**; weighted totals are never treated as observed sample sizes.
-
-## Verified data and scope
-
-**March 1–31, 2025 only:** 836,070 sampled games from the [Lichess monthly rated-standard dump](https://database.lichess.org/), 97,512,351 source games scanned. All checksum, manifest, hash-selection, sampling-rate and record checks pass; 0 additional rows excluded. Includes blitz, rapid and classical; BOT titles, invalid ratings/results, other terminations and games below two plies were excluded by the collector. Resignations and legitimate short games are retained.
-
-The sample is deterministic by game ID, with 1% base sampling and 10% classical/2200/2500-band overrides. Bands use mean opponent Elo. All collected bands enter H1; H2 uses bands >=1200 and >=200 observed games/reply. The archived Explorer CSV has unverified dates and is excluded. The legacy game CSV drops resignations and is excluded.
-
-## Method and results
-
-10,000-replicate sampling-aware Poisson multiplier bootstrap, draw-preserving multinomial null simulations, exact decisive-game binomial cross-checks where applicable, BH adjustment, equal-rating spline score regression and shared-player dyadic sensitivity. Prespecified choices are recorded in the audit. Independent-game and disjoint-player assumptions are explicit in the report.
-
-| Group                      |       N | White score   | 95% CI          |   Above 50% (pp) |   Adjusted p | Interpretation           |
-|:---------------------------|--------:|:--------------|:----------------|-----------------:|-------------:|:-------------------------|
-| Overall (primary weighted) | 836,070 | 51.776%       | 51.653%–51.899% |            1.776 |    9.999e-05 | Score above 50% detected |
-| blitz                      | 623,882 | 51.776%       | 51.637%–51.915% |            1.776 |    0.0001267 | Score above 50% detected |
-| classical                  |  54,562 | 51.793%       | 51.402%–52.182% |            1.793 |    0.0001267 | Score above 50% detected |
-| rapid                      | 157,626 | 51.776%       | 51.523%–52.024% |            1.776 |    0.0001267 | Score above 50% detected |
-
-Near-equal-rating score: **51.819%** (CI 51.637%–52.004%, n=327,230). Band scores have no monotonic trend. Sensitivities preserve H1's direction, but the >=40-ply subset reduces the score to **50.769%** (CI 50.637%–50.903%), a **−1.007 pp** change that also changes the population under study. H2's median reply-score range is 6.24 pp; ranges are selected extremes with uncertainty, not objective opening values. Near-equal-rating H2 retains only **1/28 score-spread rejections**.
-
-![White score and confidence intervals](figures/h1_score_confidence_intervals.png)
-
-![Black replies after e4, band 1600](figures/fig07_replies_e4.png)
-
-## Reproduce offline
+<details open>
+<summary><b>01 · Scientific pipeline, notebook and tests</b></summary>
 
 ```bash
+git clone https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real.git
+cd White_Lies-Is_the_First-Move_Advantage_Real
+
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate                   # macOS / Linux
+# Windows PowerShell: .\.venv\Scripts\Activate.ps1
+
 python -m pip install -r requirements.txt
 python -m src.run_analysis
 python -m jupyter nbconvert --to notebook --execute --inplace analysis.ipynb --ExecutePreprocessor.timeout=600
@@ -81,46 +144,93 @@ python -m pytest -q
 python tests/mock_run.py
 ```
 
-The pipeline validates inputs before analysis, performs EDA/H1/H2/robustness, writes numerical tables and reports, exports 11 scientific figures in PNG/PDF, and checks outputs. It makes no network calls or large downloads. The retained `data/games_2025-03.parquet` and adjacent manifest must be present; the complete monthly dump is not included or downloaded automatically. The notebook runs from the repository root using `src` imports. Seed: **202503**. Executed package versions: [software_versions.json](results/software_versions.json).
-
-For an isolated reproduction that preserves the recorded outputs and publication README, run:
+For an **isolated run** that does not write to the publication's recorded output paths, use:
 
 ```bash
 python -m src.run_analysis --output-root /path/to/separate-output
 ```
 
-The original pipeline's default report writer regenerates the research README, and executing the notebook reruns that pipeline. Review diffs after either operation. The scientific pipeline remains unchanged. [Running the analysis](docs/reproducibility/running.md) and [validation](docs/reproducibility/validation.md) explain the commands and their scope.
+The analysis produces validated tables, H1/H2 tests, robustness outputs, reports and **11 scientific figures** in PNG/PDF. Recorded random seed: **202503**. See [executed dependency versions](results/software_versions.json).
 
-## Repository guide
+</details>
 
-| Location | Content |
-|---|---|
-| `analysis.ipynb` | Executed scientific notebook with interpretation |
-| `src/validation.py` | Fail-closed provenance and counted cleaning |
-| `src/stats.py`, `hypothesis_h1.py` | Reusable scores, bootstrap/null tests, weighting and adjustment |
-| `src/h2.py`, `hypothesis_h2.py` | Existing spread test plus March grouping, coverage, full-distribution tests and BH |
-| `src/run_analysis.py`, `plotting.py`, `reporting.py` | Offline execution, figures and data-driven documents |
-| `src/fetch_games.py`, `explorer.py`, `wiki_scrape.py` | Preserved optional collectors and metadata helpers |
-| `results/` | Provenance, EDA, H1/H2, sensitivity, model and source-availability tables |
-| `figures/fig01_*` through `fig10_*` | Final March figures, plus H1 interval plot; each PNG and PDF |
-| `reports/` | Audit, full report, short conclusion and verification |
-| `tests/` | Analytic, synthetic calibration/power, provenance and artifact checks |
-| `mkdocs.yml`, `requirements-docs.txt` | Website configuration and pinned documentation dependencies |
-| `docs/` | Homepage, research, explorer, methodology, reproducibility and project pages |
-| `docs/assets/` | Local design assets, compact aggregate data and copied final figures/reports |
-| `overrides/` | Modular Material template customizations |
-| `scripts/build_docs_assets.py`, `scripts/docs_hook.py` | Deterministic website synchronization without running research |
-| `.github/workflows/docs.yml` | Documentation validation and official GitHub Pages deployment |
-| `website/` | Preserved earlier Streamlit interface; MkDocs is the primary publication |
+<details>
+<summary><b>02 · Preview and validate the research website</b></summary>
 
-Old `q1_*`, `q2_*`, `draw_rate_by_band.*` and LaTeX artifacts are retained exploratory Explorer outputs; their dates are unverified. They do not support the March conclusions. `original_project/build_notebook.py` is an archived historical generator and must not replace the repaired notebook.
+```bash
+python -m venv .venv-docs
+source .venv-docs/bin/activate             # macOS / Linux
+# Windows PowerShell: .\.venv-docs\Scripts\Activate.ps1
 
-## Limits and optional future work
+python -m pip install -r requirements-docs.txt
+python -m mkdocs serve
+```
 
-The study covers one site/month with selected rated game types. Ratings and opening choices are observational; repeated players limit independent-game inference. Near-equal H2 has less evidence, threshold decisions change, and high-rating classical cells are sparse. Explorer source alignment and full ECO mapping remain unverified. Full-year collection and Masters analysis remain optional future research and have not been implemented. The static dashboard presents the existing March study; it does not extend its data coverage. Read the [limitations](docs/research/limitations.md) alongside the findings.
+Open the local URL printed by MkDocs (typically `http://127.0.0.1:8000/`). Run publication checks with:
 
-## Contributing
+```bash
+python scripts/build_docs_assets.py --check
+python -m mkdocs build --strict
+python scripts/check_site.py
+```
 
-Use repository issues or pull requests for reproducible problems and focused improvements. Statistical changes should identify the affected source table or method, regenerate evidence through the scientific pipeline and include validation. Website changes should preserve score definitions, observed sample sizes, weighting labels and uncertainty. Edit authoritative reports in `reports/` and regenerate website copies instead of maintaining separate scientific narratives.
+The docs build copies verified research artifacts and creates compact aggregate JSON; it **does not rerun** the research analysis.
 
-The primary data are attributed to [Lichess](https://database.lichess.org/). Methodological references and source distinctions appear in [research sources](docs/project/sources.md). No institutional affiliation, peer-review status or endorsement is implied.
+</details>
+
+## Project structure
+
+```text
+White_Lies-Is_the_First-Move_Advantage_Real/
+├── README.md                  ← this research landing page
+├── assets/
+│   └── readme-hero.svg        ← README banner
+├── analysis.ipynb             ← executed scientific notebook
+├── data/                      ← validated March dataset + provenance
+├── src/                       ← sampling, validation, statistics, H1/H2
+├── figures/                   ← 11 scientific figures (PNG / PDF)
+├── results/                   ← study outputs and version metadata
+├── reports/                   ← scientific report, audit, verification
+├── tests/                     ← calibration, provenance and other checks
+├── docs/                      ← research publication content
+├── overrides/                 ← Material for MkDocs templates
+├── scripts/                   ← build/sync/check site assets
+├── website/                   ← archived Streamlit interface
+├── mkdocs.yml                 ← publication configuration
+├── requirements.txt           ← scientific environment
+└── requirements-docs.txt      ← website environment
+```
+
+The `website/` Streamlit code is **not** the primary publication. The MkDocs site is. Archived Explorer/legacy outputs with unverified dates do **not** support the March 2025 conclusions. For file-level details, see the [implementation audit](reports/implementation_audit.md).
+
+## Scope, uncertainty and limitations
+
+This analysis concerns **one month, one platform and selected rated game types**. Player ratings and opening choices are observational, shared players complicate independence assumptions, and some high-rating classical cells are sparse. H2 becomes substantially weaker under near-equal-rating restrictions; sensitivity filters can change the population being estimated. Full-year collection, Masters analysis and full ECO alignment are **not** claimed as completed.
+
+See [limitations](docs/research/limitations.md) and the [complete scientific report](reports/FINAL_RESEARCH_REPORT.md) before drawing general chess or causal conclusions.
+
+<details>
+<summary><b>Project maintenance and scientific integrity notes</b></summary>
+
+- **README regeneration:** The original scientific report writer may overwrite `README.md` during the default analysis run, and notebook execution reruns that pipeline. For preserving this designed README, use a separate output root where appropriate and review changes before committing.
+- **GitHub Pages:** The recorded publication setup calls for **Settings → Pages → Build and deployment → Source → GitHub Actions**, to avoid conflict with branch-based publishing. See [website maintenance](docs/project/website.md).
+- **Publication fidelity:** Always preserve the distinction between sampled counts and weighted estimates, confidence intervals, multiple-testing corrections and observational associations. Edit authoritative `reports/` files rather than independent copies of scientific results.
+- **Research checks:** See the [verification checklist](reports/COMPLETION_CHECKLIST.md) and [website implementation report](reports/WEBSITE_IMPLEMENTATION.md).
+
+</details>
+
+## Contributing and attribution
+
+Contributions are welcome through [issues](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/issues) and pull requests, ideally with a reproducible example, the affected source output and matching validation. Primary game data are from [Lichess](https://database.lichess.org/); additional sources and methodological references are catalogued [here](docs/project/sources.md). This project does **not** imply institutional affiliation, peer review or endorsement.
+
+---
+
+<div align="center">
+
+**A small edge. A large dataset. A question worth testing.**
+
+[**Explore the live publication ↗**](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/) · [**View repository**](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real) · [**Read the final report**](reports/FINAL_RESEARCH_REPORT.md)
+
+<sub>WHITE LIES · March 2025 Lichess study · Research and code for transparent, reproducible analysis</sub>
+
+</div>
