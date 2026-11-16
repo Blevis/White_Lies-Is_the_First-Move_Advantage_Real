@@ -1,37 +1,46 @@
 ---
-title: Dataset and provenance
-description: Where the March 2025 games came from, how source accounting is validated and which historical data are excluded.
+title: Data and source checks
+description: Where the games came from, what the sample contains, and how the local files were checked.
 ---
 
-# A sample with an audit trail
+# Where the games came from
 
-The primary input is a deterministic sample of the [Lichess March 2025 rated-standard monthly dump](https://database.lichess.org/standard/lichess_db_standard_rated_2025-03.pgn.zst). The games were played **March 1–31, 2025**. Collection occurred in November 2026; collection dates do not change the game period.
+We used the [Lichess March 2025 archive of rated standard games](https://database.lichess.org/standard/lichess_db_standard_rated_2025-03.pgn.zst). The games were played **March 1–31, 2025** and collected in November 2026.
 
-## Three quantities to keep separate
+## Which game count should I use?
 
-| Quantity | Value | Meaning |
+| Count | Value | Meaning |
 | --- | ---: | --- |
-| Source games scanned | 97,512,351 | Games encountered before eligibility and sampling |
-| Observed sampled games | 836,070 | Validated game records entering the primary analysis |
-| Estimated eligible population total | 59,802,180 | Sum of inverse-probability weights; an estimate, not observed N |
+| Games scanned | 97,512,351 | All games the collector read, before exclusions and sampling |
+| Games studied | **836,070** | The sampled game records used in the main analysis |
+| Estimated eligible total | 59,802,180 | The total represented by the sampling weights; not an observed count |
 
-The collector streamed **31,787,738,173 compressed bytes**. The complete compressed monthly dump is not included in the repository. Routine analysis reads the retained Parquet sample and manifest, and does not download the dump.
+Use **836,070** when describing the study's sample size. The sample is not the full month of Lichess games.
 
-## Validated local inputs
+The collector read 31,787,738,173 compressed bytes. The full monthly archive is not bundled with the project. Running the analysis uses the saved sample and does not download the archive again.
 
-The required pair is `data/games_2025-03.parquet` and `data/games_2025-03.parquet.manifest.json`. The recorded SHA-256 of the Parquet file is:
+## How were the saved files checked?
 
-```text
-e055e8f921b3b242188c0493d57acc8fe83a2200ee0223e6cb817dc5a627ffaa
-```
+The analysis requires both:
 
-`src/validation.py` checks completion, source month and URL, file location and checksum, row count, per-cell counts, deterministic hash thresholds, declared sampling rates and source accounting. The exported `results/dataset_summary.json` records the results of those checks. All 836,070 retained records passed additional cleaning, with **zero further exclusions**.
+- `data/games_2025-03.parquet`: the sampled games.
+- `data/games_2025-03.parquet.manifest.json`: a record of the source, sampling rules, counts and file checksum.
 
-!!! note "What a checksum establishes"
-    The checksum verifies agreement between the local data and local manifest. It does not independently authenticate the original remote dump or repeat the source scan.
+The validator checks the source month and URL, file location, checksum, number of games, group counts and sampling rules. It also checks that the recorded exclusions and sampling counts add up to the scanned total.
 
-## What is absent from the confirmatory evidence?
+All **836,070 records** passed the later cleaning checks, with **zero additional exclusions**. Results are saved in `results/dataset_summary.json` and `results/cleaning_ledger.csv`.
 
-The archived `data/raw/explorer_raw.csv` lacks an authenticatable query period and cached responses. The legacy game CSV excludes resignations and has a different selection mechanism. Neither supplies the final March estimates. `results/source_comparison.csv` explicitly records that the aligned Explorer comparison is unavailable.
+??? info "File checksum and its limits"
+    A checksum is a fingerprint of a file. The recorded SHA-256 is:
 
-Continue with [sampling and exclusions](sampling.md), [output provenance](../reproducibility/outputs.md) or the [authoritative report](../research/report.md#3-dataset).
+    ```text
+    e055e8f921b3b242188c0493d57acc8fe83a2200ee0223e6cb817dc5a627ffaa
+    ```
+
+    A match confirms that the local file agrees with the local manifest. It does not independently verify the original remote archive or repeat the source collection.
+
+## Why not use the older data too?
+
+The archived Opening Explorer CSV has no verifiable query period or saved responses. The legacy game CSV excludes resignations and was collected differently. Neither is used for the final March findings.
+
+Continue with [sampling and exclusions](sampling.md), or return to [the study overview](../research/approach.md).

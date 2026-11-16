@@ -59,26 +59,26 @@
     ];
     return `<div class="wl-outcomes" role="img" aria-label="${esc(parts.map(p=>`${p[0]} ${pct(p[1])}`).join(", "))}">${parts.map(p=>`<span class="wl-outcome-${p[2]}" style="width:${p[1]*100}%" title="${p[0]}: ${pct(p[1])}"></span>`).join("")}</div>
       <dl class="wl-outcome-legend">${parts.map(p=>`<div><dt><i class="wl-outcome-${p[2]}"></i>${p[0]}</dt><dd>${pct(p[1])}</dd></div>`).join("")}</dl>
-      <p class="wl-chart-note">${row.weighted ? "Inverse-probability-weighted outcome shares" : "Raw sample outcome shares"}. White score = White win share + half the draw share. These percentages are not raw game counts.</p>`;
+      <p class="wl-chart-note">${row.weighted ? "Outcome percentages adjusted for sampling rates" : "Outcome percentages in the collected sample"}. White score = White win share + half the draw share. These percentages are not raw game counts.</p>`;
   }
 
   function initExplorer(root, data) {
     const id = `wl-ex-${++instance}`;
-    root.innerHTML = `<div class="wl-dashboard-toolbar"><div><span class="wl-overline">RESEARCH EXPLORER</span><p>March 2025 · frozen research outputs</p></div>${select(`${id}-category`, "View results", [["all","All findings"],["h1","H1 · White score"],["h2","H2 · Opening replies"]])}</div>
+    root.innerHTML = `<div class="wl-dashboard-toolbar"><div><span class="wl-overline">RESEARCH EXPLORER</span><p>March 2025 · saved study results</p></div>${select(`${id}-category`, "View results", [["all","All findings"],["h1","White’s score"],["h2","Black’s replies"]])}</div>
       <p class="wl-data-status" role="status" aria-live="polite" data-status></p>
       <div data-h1-panel>
-        <div class="wl-filter-panel"><div class="wl-section-label">H1 / Select a population</div><div class="wl-filter-grid">
+        <div class="wl-filter-panel"><div class="wl-section-label">Choose games for the White-score comparison</div><div class="wl-filter-grid">
           ${select(`${id}-speed`,"Time control",[["all","All time controls"],...speeds.map(s=>[s,s[0].toUpperCase()+s.slice(1)])])}
-          ${select(`${id}-band`,"Mean-rating band",[["all","All rating bands"],...bands.map(b=>[b,bandLabel(b)])])}
-          ${select(`${id}-weight`,"Estimator",[["weighted","Weighted · primary"],["raw","Unweighted · whole sample"]])}
+          ${select(`${id}-band`,"Average rating band",[["all","All rating bands"],...bands.map(b=>[b,bandLabel(b)])])}
+          ${select(`${id}-weight`,"Calculation",[["weighted","Weighted · primary"],["raw","Unweighted · collected sample"]])}
           <button class="wl-ui-button wl-filter-reset" type="button" data-reset>Reset filters</button>
-        </div><p class="wl-control-hint">Unweighted intervals are available for the whole sample only. Mean-rating bands use both players’ recorded Elo.</p></div>
+        </div><p class="wl-control-hint">The unweighted option is available for all games together. Rating bands use the average of the two players’ ratings.</p></div>
         <div class="wl-kpis" data-kpis></div>
-        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">01</span><div><h2>White scoring advantage</h2><p data-selected-label></p></div></div><div data-chart-primary></div><p class="wl-caution" data-h1-status></p><p class="wl-chart-note">The point is expected score, with a win worth 1, a draw ½ and a loss 0. The line is the exported 95% confidence interval. Source: <code>h1_results.csv</code> / <code>h1_summary.json</code>.</p></section>
-        <div class="wl-chart-grid"><section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">02</span><div><h2>By time control</h2><p data-speed-caption></p></div></div><div data-chart-speed></div><p class="wl-chart-note">Weighted comparisons at the selected rating band. Overlapping intervals do not establish equality between time controls. Source: <code>h1_results.csv</code>.</p></section>
-        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">04</span><div><h2>Three outcomes. One score.</h2><p data-outcome-caption></p></div></div><div data-chart-outcome></div><p class="wl-chart-note">Outcome shares have no intervals in this view. Source: <code>h1_results.csv</code> / <code>h1_summary.json</code>.</p></section></div>
-        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">03</span><div><h2>Across rating bands</h2><p data-band-caption></p></div></div><div data-chart-band></div><p class="wl-chart-note">Weighted estimates. There is no monotonic pattern across rating bands. Sparse groups remain descriptive; uncertainty is shown rather than hidden. Source: <code>h1_results.csv</code>.</p></section>
-        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">06</span><div><h2>How sensitive is the finding?</h2><p>Whole-study sensitivity analyses · independent of the filters above</p></div></div><div data-chart-robustness></div><p class="wl-caution"><strong>Game length changes the magnitude.</strong> Requiring at least 40 plies reduces the weighted score from 51.776% to 50.769%. This restriction changes the population under analysis. A ply is one player’s move.</p><p class="wl-chart-note">Intervals and sample sizes are copied from the reported analyses. Equal-rating standardization uses dyadic covariance; the other displayed intervals use the reported bootstrap. Source: <code>robustness_results.csv</code> and <code>h1_summary.json</code>.</p></section>
+        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">01</span><div><h2>White scoring advantage</h2><p data-selected-label></p></div></div><div data-chart-primary></div><p class="wl-caution" data-h1-status></p><p class="wl-chart-note">A win earns 1 point, a draw ½ and a loss 0. The point shows White’s score; the line shows its 95% confidence interval.</p></section>
+        <div class="wl-chart-grid"><section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">02</span><div><h2>By time control</h2><p data-speed-caption></p></div></div><div data-chart-speed></div><p class="wl-chart-note">Compare game speeds within the selected rating band. Close estimates or overlapping intervals do not prove equal scores.</p></section>
+        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">03</span><div><h2>Three outcomes. One score.</h2><p data-outcome-caption></p></div></div><div data-chart-outcome></div><p class="wl-chart-note">These percentages have no confidence intervals in this view.</p></section></div>
+        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">04</span><div><h2>Across rating bands</h2><p data-band-caption></p></div></div><div data-chart-band></div><p class="wl-chart-note">White’s score does not steadily increase with rating. Groups with too little data are shown for reference without a test conclusion.</p></section>
+        <section class="wl-chart-card"><div class="wl-card-heading"><span class="wl-chart-index">05</span><div><h2>What changes with different game selections?</h2><p>Checks for the whole study · these do not change with the filters above</p></div></div><div data-chart-robustness></div><p class="wl-caution"><strong>Keeping only longer games reduces the edge.</strong> Requiring at least 40 plies reduces the weighted score from 51.776% to 50.769%. This changes which games are studied. A ply is one player’s move.</p><p class="wl-chart-note">The equal-rating model’s interval accounts for games sharing a player. The other intervals use repeated sampling simulations. All values come from the saved analysis.</p></section>
       </div><div data-h2-panel><div data-opening-module></div></div>`;
     const controls = Object.fromEntries(["category","speed","band","weight"].map(name=>[name,root.querySelector(`#${id}-${name}`)]));
     const query = selector => root.querySelector(selector);
@@ -93,15 +93,15 @@
       const raw = controls.weight.value === "raw";
       const row = raw ? data.h1.summary.raw : data.h1.rows.find(r => r.speed === speed && (band === "all" ? r.band === -1 : r.band === Number(band)));
       const label = `${speed === "all" ? "All time controls" : speed[0].toUpperCase()+speed.slice(1)} · ${band === "all" ? "all rating bands" : bandLabel(band)}`;
-      query("[data-status]").textContent = `${resetMessage}Showing ${raw ? "unweighted sample" : "weighted"} H1 results for ${label.toLowerCase()}. H2 uses its own cell filters below.`;
+      query("[data-status]").textContent = `${resetMessage}Showing ${raw ? "unweighted sample" : "weighted"} White-score results for ${label.toLowerCase()}. The reply comparison has separate filters below.`;
       if (!row) {
         query("[data-chart-primary]").innerHTML = empty("This estimate is not present in the validated exports.");
         return;
       }
-      query("[data-kpis]").innerHTML = [["Sampled games",count(row.N)],["White score",pct(row.score)],["Above 50%",`${row.score>=.5?"+":""}${((row.score-.5)*100).toFixed(3)} pp`],["Estimator",raw?"Unweighted":"IPW"]].map(([label,value])=>`<div class="wl-kpi"><span>${label}</span><strong>${value}</strong></div>`).join("");
-      query("[data-selected-label]").textContent = `${label} · ${raw ? "raw sample estimate" : "inverse-probability weighting"}`;
-      query("[data-chart-primary]").innerHTML = intervals([{...row,label:"Selected population"}],"White score and 95% confidence interval");
-      query("[data-h1-status]").textContent = row.status === "insufficient" ? "Descriptive only: this group has insufficient observed games or decisive outcomes for the prespecified H1 test. It is not evidence for or against equality." : raw ? "The raw estimate describes the deliberately oversampled study sample. It does not adjust for the different collection probabilities." : "The weighted estimate targets the eligible source-game population under the sampling assumptions. N is the observed sample count, not a weighted population total.";
+      query("[data-kpis]").innerHTML = [["Sampled games",count(row.N)],["White score",pct(row.score)],["Above 50%",`${row.score>=.5?"+":""}${((row.score-.5)*100).toFixed(3)} pp`],["Calculation",raw?"Unweighted":"Weighted"]].map(([label,value])=>`<div class="wl-kpi"><span>${label}</span><strong>${value}</strong></div>`).join("");
+      query("[data-selected-label]").textContent = `${label} · ${raw ? "raw sample estimate" : "adjusted for sampling rates"}`;
+      query("[data-chart-primary]").innerHTML = intervals([{...row,label:"Selected games"}],"White score and 95% confidence interval");
+      query("[data-h1-status]").textContent = row.status === "insufficient" ? "Descriptive only: there are too few games or games with a winner for the planned test. This does not show whether scores are equal." : raw ? "The unweighted score describes the collected sample. It gives extra influence to groups sampled more often." : "The weighted score adjusts for different sampling rates. Game counts show actual sampled games, not the larger total represented by weights.";
       const speedRows = speeds.map(s=>data.h1.rows.find(r=>r.speed===s && (band==="all"?r.group_type==="speed":r.group_type==="cell"&&r.band===Number(band)))).filter(Boolean);
       query("[data-chart-speed]").innerHTML = intervals(speedRows.map(r=>({...r,label:r.speed[0].toUpperCase()+r.speed.slice(1)})),"White score by time control",{compact:true});
       query("[data-speed-caption]").textContent = band==="all" ? "All rating bands · weighted" : `Rating ${bandLabel(band)} · weighted`;
@@ -114,13 +114,13 @@
     controls.category.addEventListener("change",()=>{
       query("[data-h1-panel]").hidden=controls.category.value==="h2";
       query("[data-h2-panel]").hidden=controls.category.value==="h1";
-      query("[data-status]").textContent = controls.category.value==="all"?"Showing both hypothesis sections. Each section has separate population filters.":`Showing ${controls.category.value.toUpperCase()} results.`;
+      query("[data-status]").textContent = controls.category.value==="all"?"Showing both comparisons. Each has separate game filters.":`Showing ${controls.category.value === "h1" ? "White-score" : "opening-reply"} results.`;
     });
     for(const name of ["speed","band","weight"]) controls[name].addEventListener("change",renderH1);
     query("[data-reset]").addEventListener("click",()=>{controls.speed.value="all";controls.band.value="all";controls.weight.value="weighted";renderH1();});
     const scenarios = ["Unweighted sample","Absolute rating difference <= 25","Exclude time forfeits","At least 10 plies","At least 40 plies"];
     const shortLabels = {"Unweighted sample":"Unweighted sample","Absolute rating difference <= 25":"Rating gap ≤ 25","Exclude time forfeits":"No time forfeits","At least 10 plies":"At least 10 plies","At least 40 plies":"At least 40 plies"};
-    const robust = [{...data.h1.summary.primary,label:"Primary · weighted"},{...data.h1.summary.rating_adjusted,label:"Equal-rating model"},...scenarios.map(s=>data.robustness.find(r=>r.hypothesis==="H1"&&r.scenario===s)).filter(Boolean).map(r=>({...r,label:shortLabels[r.scenario]}))];
+    const robust = [{...data.h1.summary.primary,label:"Main result · weighted"},{...data.h1.summary.rating_adjusted,label:"Equal-rating model"},...scenarios.map(s=>data.robustness.find(r=>r.hypothesis==="H1"&&r.scenario===s)).filter(Boolean).map(r=>({...r,label:shortLabels[r.scenario]}))];
     query("[data-chart-robustness]").innerHTML = intervals(robust,"H1 robustness and sensitivity estimates");
     initOpenings(query("[data-opening-module]"),data);
     renderH1();
@@ -158,15 +158,15 @@
 
   function initOpenings(root, data) {
     const id=`wl-open-${++instance}`;
-    root.innerHTML=`<section class="wl-chart-card wl-opening-card"><div class="wl-card-heading"><span class="wl-chart-index">05</span><div><h2>Black’s first reply</h2><p>A move on the board. An observed group in the data.</p></div></div>
-      <div class="wl-filter-grid wl-opening-filters">${select(`${id}-first`,"White’s first move",[["e4","1.e4"],["d4","1.d4"]])}${select(`${id}-speed`,"Time control",speeds.map(s=>[s,s[0].toUpperCase()+s.slice(1)]))}${select(`${id}-band`,"Mean-rating band",bands.map(b=>[b,bandLabel(b)]))}${select(`${id}-reply`,"Black’s immediate reply",[["all","All tested replies"]])}</div>
+    root.innerHTML=`<section class="wl-chart-card wl-opening-card"><div class="wl-card-heading"><span class="wl-chart-index">06</span><div><h2>Black’s first reply</h2><p>Compare replies within the same first move, speed and rating band.</p></div></div>
+      <div class="wl-filter-grid wl-opening-filters">${select(`${id}-first`,"White’s first move",[["e4","1.e4"],["d4","1.d4"]])}${select(`${id}-speed`,"Time control",speeds.map(s=>[s,s[0].toUpperCase()+s.slice(1)]))}${select(`${id}-band`,"Average rating band",bands.map(b=>[b,bandLabel(b)]))}${select(`${id}-reply`,"Black’s reply",[["all","All tested replies"]])}</div>
       <div class="wl-opening-status" role="status" aria-live="polite" data-opening-status></div>
-      <div class="wl-opening-layout"><aside class="wl-board-panel" aria-label="Explanatory chess position"><div data-board></div><div class="wl-board-buttons"><button type="button" class="wl-ui-button" data-board-reset>Initial position</button><button type="button" class="wl-ui-button" data-board-show>Show selected moves</button></div><p class="wl-chart-note">White is at the bottom; a1 is dark. This board illustrates the selected grouping. It is not an engine evaluation or a recommendation.</p></aside>
-        <div class="wl-reply-panel"><div class="wl-test-results" data-cell-results></div><div data-reply-chart></div><p class="wl-chart-note">Points are White scores. Intervals are marginal 95% intervals, not simultaneous or adjusted for selecting extremes. Within each cell, sampling weights are constant. Omnibus tests concern the whole eligible reply set, not individual replies.</p></div></div>
-      <div class="wl-table-tools"><label class="wl-control" for="${id}-search"><span>Search tested reply notation</span><input type="search" id="${id}-search" placeholder="For example, Nf6" autocomplete="off"></label><span class="wl-control-hint">Select a column heading to sort. Default order is notation.</span></div>
+      <div class="wl-opening-layout"><aside class="wl-board-panel" aria-label="Explanatory chess position"><div data-board></div><div class="wl-board-buttons"><button type="button" class="wl-ui-button" data-board-reset>Initial position</button><button type="button" class="wl-ui-button" data-board-show>Show selected moves</button></div><p class="wl-chart-note">White is at the bottom; a1 is dark. The board shows the selected moves. It does not judge the position or recommend a defense.</p></aside>
+        <div class="wl-reply-panel"><div class="wl-test-results" data-cell-results></div><div data-reply-chart></div><p class="wl-chart-note">Points show White’s score; lines show each reply’s 95% interval. Tests compare all eligible replies in the group. Choosing the highest or lowest score adds uncertainty that these intervals do not account for.</p></div></div>
+      <div class="wl-table-tools"><label class="wl-control" for="${id}-search"><span>Search replies</span><input type="search" id="${id}-search" placeholder="For example, Nf6" autocomplete="off"></label><span class="wl-control-hint">Select a column heading to sort. Default order is notation.</span></div>
       <div class="wl-table-scroll" tabindex="0" role="region" aria-label="Opening replies table"><table class="wl-data-table"><caption data-table-caption></caption><thead><tr><th scope="col" aria-sort="ascending"><button type="button" data-sort="reply">Reply <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" data-sort="N">Sample n <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" data-sort="score">White score <span aria-hidden="true">↕</span></button></th><th scope="col">95% interval</th><th scope="col">Status</th></tr></thead><tbody data-reply-table></tbody></table></div>
-      <p class="wl-caution">Observed reply differences can reflect player selection and rating imbalance. Sorting does not identify the objectively best defense. Near-equal-rating sensitivity leaves only 1 of 28 score-spread rejections.</p>
-      <p class="wl-chart-note">Sources: <code>h2_results.csv</code>, <code>h2_reply_scores.csv</code>, <code>h2_summary.json</code>. Bands below 1200 and replies with fewer than 200 observed games are excluded from primary H2; a tested cell needs at least two eligible replies. All 35 eligible cells belong to each test’s separate Benjamini–Hochberg correction family.</p></section>`;
+      <p class="wl-caution">Different players choose different replies. Sorting by score does not identify the best defense. With players within 25 rating points, only 1 of 28 groups still showed score differences.</p>
+      <p class="wl-chart-note">Main comparisons use rating bands starting at 1200, with at least 200 sampled games per reply and at least two replies. The two tests are adjusted separately for multiple comparisons across all 35 eligible groups.</p></section>`;
     const q=selector=>root.querySelector(selector);
     const controls=Object.fromEntries(["first","speed","band","reply","search"].map(name=>[name,q(`#${id}-${name}`)]));
     controls.band.value="1600";
@@ -175,12 +175,12 @@
     function renderTable() {
       const search=controls.search.value.trim().toLowerCase();
       const filtered=rows.filter(r=>r.reply.toLowerCase().includes(search)).sort((a,b)=>sortDirection*(sortKey==="reply"?a.reply.localeCompare(b.reply):a[sortKey]-b[sortKey]));
-      q("[data-reply-table]").innerHTML=filtered.length?filtered.map(r=>`<tr><td><button type="button" class="wl-reply-link" data-show-reply="${esc(r.reply)}" aria-label="Show 1.${esc(r.first)} ${esc(r.reply)} on the chessboard">${esc(r.reply)}</button></td><td>${count(r.N)}</td><td>${pct(r.score)}</td><td>${pct(r.lo)}–${pct(r.hi)}</td><td>Eligible · tested cell</td></tr>`).join(""):`<tr><td colspan="5">${rows.length?"No tested reply matches this search.":"No primary tested replies in this cell."}</td></tr>`;
+      q("[data-reply-table]").innerHTML=filtered.length?filtered.map(r=>`<tr><td><button type="button" class="wl-reply-link" data-show-reply="${esc(r.reply)}" aria-label="Show 1.${esc(r.first)} ${esc(r.reply)} on the chessboard">${esc(r.reply)}</button></td><td>${count(r.N)}</td><td>${pct(r.score)}</td><td>${pct(r.lo)}–${pct(r.hi)}</td><td>Included in the comparison</td></tr>`).join(""):`<tr><td colspan="5">${rows.length?"No tested reply matches this search.":"No replies meet the main comparison rules for this group."}</td></tr>`;
       q("[data-table-caption]").textContent=`${filtered.length} tested ${filtered.length===1?"reply":"replies"} · 1.${controls.first.value} · ${controls.speed.value} · mean rating ${bandLabel(controls.band.value)}`;
     }
     function renderSelection() {
       const selected=controls.reply.value==="all"?rows:rows.filter(r=>r.reply===controls.reply.value);
-      q("[data-reply-chart]").innerHTML=rows.length?intervals(selected.map(r=>({...r,label:`1…${r.reply}`})),"White score by Black immediate reply",{compact:true}):empty(Number(controls.band.value)<1200?"The primary H2 design excludes mean-rating bands below 1200. Select a band of 1200 or higher.":"This cell has fewer than two replies meeting the 200-game threshold. Sparse data do not establish equality.");
+      q("[data-reply-chart]").innerHTML=rows.length?intervals(selected.map(r=>({...r,label:`1…${r.reply}`})),"White score by Black immediate reply",{compact:true}):empty(Number(controls.band.value)<1200?"The main reply analysis excludes rating bands below 1200. Select a band of 1200 or higher.":"This group has fewer than two replies with 200 sampled games each. Too little data does not show equal outcomes.");
       initial=false;renderBoard();
     }
     function renderCell() {
@@ -192,9 +192,9 @@
       if(rows.some(r=>r.reply===oldReply)) controls.reply.value=oldReply;
       controls.reply.disabled=!rows.length;
       const label=`1.${controls.first.value} · ${controls.speed.value} · rating ${bandLabel(controls.band.value)}`;
-      q("[data-opening-status]").textContent=rows.length?`${label}: ${rows.length} tested replies, ${count(cell.included_games)} included sampled games; ${allRows.length-rows.length} observed replies excluded by the primary eligibility rules.`:`${label}: no primary H2 test is available. ${cell ? `${count(cell.total_games)} sampled games were observed in this cell.` : "No observed cell is present in the exported results."}`;
+      q("[data-opening-status]").textContent=rows.length?`${label}: ${rows.length} tested replies, ${count(cell.included_games)} included sampled games; ${allRows.length-rows.length} recorded replies did not meet the comparison rules.`:`${label}: no main reply test is available. ${cell ? `${count(cell.total_games)} sampled games were recorded in this group.` : "This group is absent from the saved results."}`;
       const p=value=>Number.isFinite(value)?value.toPrecision(4):"Unavailable";
-      q("[data-cell-results]").innerHTML=cell?.status==="tested"?`<div><span>Score-spread test</span><strong>${cell.reject_score?"Evidence detected":"Not detected"}</strong><small>BH q = ${p(cell.q_score)}</small></div><div><span>W / D / B distribution</span><strong>${cell.reject_distribution?"Evidence detected":"Not detected"}</strong><small>BH q = ${p(cell.q_distribution)}</small></div>`:`<div><span>Cell eligibility</span><strong>Insufficient for testing</strong><small>No adjusted p-value is available.</small></div>`;
+      q("[data-cell-results]").innerHTML=cell?.status==="tested"?`<div><span>Score differences</span><strong>${cell.reject_score?"Evidence of differences":"No clear evidence"}</strong><small>Adjusted p = ${p(cell.q_score)}</small></div><div><span>Win / draw / loss differences</span><strong>${cell.reject_distribution?"Evidence of differences":"No clear evidence"}</strong><small>Adjusted p = ${p(cell.q_distribution)}</small></div>`:`<div><span>Comparison status</span><strong>Too little data for testing</strong><small>No adjusted p-value is available.</small></div>`;
       renderSelection();renderTable();
     }
     for(const key of ["first","speed","band"]) controls[key].addEventListener("change",renderCell);
@@ -209,7 +209,7 @@
         root.querySelectorAll("[data-sort]").forEach(button=>button.parentElement.setAttribute("aria-sort",button===sort?(sortDirection===1?"ascending":"descending"):"none"));renderTable();
       }
       const move=event.target.closest("[data-show-reply]");
-      if(move) {controls.reply.value=move.dataset.showReply;renderSelection();q("[data-opening-status]").textContent=`Showing 1.${controls.first.value} ${controls.reply.value}. The selected reply’s interval is descriptive; cell tests still concern all eligible replies.`;}
+      if(move) {controls.reply.value=move.dataset.showReply;renderSelection();q("[data-opening-status]").textContent=`Showing 1.${controls.first.value} ${controls.reply.value}. The interval describes this reply; the tests still compare all eligible replies in the group.`;}
     });
     renderCell();
   }

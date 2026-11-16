@@ -1,23 +1,25 @@
 ---
-title: Scientific figures
-description: Eleven final March research figures with methodological context, interpretation, high-resolution PNG access and PDF originals.
+title: Charts explained
+description: A plain-language guide to the eleven study charts, with original PNG and PDF downloads.
 ---
 
-# Eleven views of the evidence
+# Read the charts
 
-These are the final figures from the **March 2025 study**, exported by `src/plotting.py` at 300 dpi with PDF counterparts. Each caption distinguishes what is measured from what the visualization cannot establish. Open the full-resolution PNG or PDF for detailed inspection.
+Start with **03, White score by time control**, for a quick comparison. Use **H1, the complete interval view**, for the main White-score result. Charts **07 and 08** explain the reply comparisons.
 
-Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Explorer data and are deliberately excluded. The [full report](../research/report.md) provides the surrounding scientific argument, and the [interactive explorer](index.md) provides accessible numeric estimates.
+**A point shows an estimated score. A line around it shows a 95% confidence interval.** A score of 50% means equal points for White and Black; it does not mean half the games were White wins.
+
+All eleven charts come from the March 2025 analysis. Download the PNG or PDF for a closer look. Older charts based on data with unverified dates are excluded. The [data explorer](index.md) provides the values with filters, and the [full report](../research/report.md) gives the complete context.
 
 ## 01 · Observed chess outcomes
 
 ![Unweighted outcome counts in the retained March sample: 412,047 White wins, 43,748 draws and 380,275 Black wins.](../assets/figures/fig01_game_outcomes.png){ loading=lazy .research-figure }
 
-**Method.** The bars show observed sample proportions, not inverse-probability-weighted population shares. Draws supply half a point when computing White score.
+**What it shows.** The sample contains 412,047 White wins, 43,748 draws and 380,275 Black wins.
 
-**Reading.** White has more recorded wins than Black in this sample; draws are a separate outcome.
+**How to read it.** These are the recorded counts before weighting. A draw contributes half a point to White’s score.
 
-**Limit.** These raw counts do not equal the primary weighted outcome mix and do not identify a causal effect of moving first.
+**Keep in mind.** The collected sample includes some groups more often than others. Its raw outcome shares differ from the main weighted result.
 
 [Full-resolution PNG](../assets/figures/fig01_game_outcomes.png){ .figure-link } · [PDF original](../assets/figures/fig01_game_outcomes.pdf){ .figure-link } · [Research context](../research/h1.md)
 
@@ -27,11 +29,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Weighted White-score estimates and 95% confidence intervals across the nine mean-opponent rating bands.](../assets/figures/fig02_score_by_band.png){ loading=lazy .research-figure }
 
-**Method.** Inverse-probability weighting pools speeds within each band. Labels show observed N and lower band bounds; 0 means below 1000 and 2500 means 2500+. The dotted line marks 50%.
+**What it shows.** White’s score varies across rating bands, without a steady increase at higher ratings.
 
-**Reading.** Scores vary across bands without a monotonic increase with rating.
+**How to read it.** Each point combines game speeds using sampling weights. Labels show sampled game counts and the lower end of each rating band. The 0 band means below 1000; 2500 means 2500 or above.
 
-**Limit.** A sequence of point estimates is not a causal rating effect. Pointwise intervals are not simultaneous comparisons between every pair of bands.
+**Keep in mind.** Each interval covers its own estimate. The chart does not establish differences between every pair of bands or show that rating causes a change in the edge.
 
 [Full-resolution PNG](../assets/figures/fig02_score_by_band.png){ .figure-link } · [PDF original](../assets/figures/fig02_score_by_band.pdf){ .figure-link } · [Research context](../research/h1.md)
 
@@ -41,11 +43,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Weighted White-score estimates with 95% intervals for blitz, rapid and classical games.](../assets/figures/fig03_score_by_speed.png){ loading=lazy .research-figure }
 
-**Method.** Each speed estimate is pooled over rating bands using sampling weights. Sample sizes remain observed game counts. The interval widths reflect different available information.
+**What it shows.** White’s weighted score is similar in blitz (51.776%), rapid (51.776%) and classical (51.793%) games.
 
-**Reading.** Pooled scores are similar: blitz 51.776%, rapid 51.776% and classical 51.793%.
+**How to read it.** The points combine rating bands within each speed. Lines show 95% confidence intervals; sample counts are actual games studied.
 
-**Limit.** Similar estimates do not prove equality of time controls or establish a causal effect of changing game speed.
+**Keep in mind.** Close estimates do not prove the scores are exactly equal. They also do not show what would happen if a player changed game speed.
 
 [Full-resolution PNG](../assets/figures/fig03_score_by_speed.png){ .figure-link } · [PDF original](../assets/figures/fig03_score_by_speed.pdf){ .figure-link } · [Research context](../research/h1.md)
 
@@ -55,11 +57,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Draw percentages by mean-rating band for blitz, rapid and classical cells with at least 200 games.](../assets/figures/fig04_draw_rate_by_band.png){ loading=lazy .research-figure }
 
-**Method.** Within a speed-band cell, all sampling weights are constant, so weighting does not change the outcome proportion. Lines and marker shapes distinguish the three speeds.
+**What it shows.** Draw frequency varies by rating band and game speed.
 
-**Reading.** Draw frequency varies with rating and speed; treating all games as binary wins and losses would discard this information.
+**How to read it.** Lines and marker shapes identify blitz, rapid and classical. Only speed-and-rating groups with at least 200 games appear. All games within one such group have the same sampling weight.
 
-**Limit.** Connecting observed cells does not fill sparse groups with estimates, and draw rates are not White scores.
+**Keep in mind.** Draw rate is different from White score. Lines connect observed groups; they do not estimate missing groups.
 
 [Full-resolution PNG](../assets/figures/fig04_draw_rate_by_band.png){ .figure-link } · [PDF original](../assets/figures/fig04_draw_rate_by_band.pdf){ .figure-link } · [Research context](../methodology/statistics.md)
 
@@ -69,11 +71,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Histogram of White Elo minus Black Elo with zero, 25-point and 100-point reference lines.](../assets/figures/fig05_rating_imbalance.png){ loading=lazy .research-figure }
 
-**Method.** The histogram uses observed sampled games. The sample's mean gap is −0.221 Elo and median is zero. The near-equal subgroup uses an absolute gap of at most 25.
+**What it shows.** The average White–Black rating gap is close to zero: −0.221 points, with a median of zero.
 
-**Reading.** A near-zero average coexists with many unequal individual pairings.
+**How to read it.** The horizontal axis is White’s rating minus Black’s rating. Reference lines mark zero and the 25- and 100-point gaps used in checks.
 
-**Limit.** An average rating gap near zero does not establish exchangeability, equal latent strength or absence of confounding.
+**Keep in mind.** A near-zero average can hide many unequal pairings. It does not mean every pair of players was closely matched.
 
 [Full-resolution PNG](../assets/figures/fig05_rating_imbalance.png){ .figure-link } · [PDF original](../assets/figures/fig05_rating_imbalance.pdf){ .figure-link } · [Research context](../methodology/ratings.md)
 
@@ -83,11 +85,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Heatmap of observed game counts across mean-rating bands and time controls.](../assets/figures/fig06_sample_coverage.png){ loading=lazy .research-figure }
 
-**Method.** Cell labels give raw N. Color uses log10 observed counts so large and small groups remain visible. The 10% inclusion overrides affect the observed composition.
+**What it shows.** The number of sampled games differs greatly across speeds and ratings. The 2500+ classical group has just one game.
 
-**Reading.** Coverage is uneven, with especially sparse high-rating classical games; the 2500+ classical cell contains one game.
+**How to read it.** Labels give actual game counts. The color scale uses powers of ten so that both large and small groups remain visible.
 
-**Limit.** The color scale does not represent a population frequency, effect size or statistical significance.
+**Keep in mind.** Color shows sample size, not White’s advantage or statistical evidence. Some groups were deliberately sampled more often.
 
 [Full-resolution PNG](../assets/figures/fig06_sample_coverage.png){ .figure-link } · [PDF original](../assets/figures/fig06_sample_coverage.pdf){ .figure-link } · [Research context](../methodology/sampling.md)
 
@@ -97,11 +99,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![White scores and marginal 95% confidence intervals after eligible Black replies to 1.e4 in the 1600–1799 band, separated by speed.](../assets/figures/fig07_replies_e4.png){ loading=lazy .research-figure }
 
-**Method.** Only tested replies with at least 200 observed games appear. Panels report cell coverage. The original figure orders observed scores for readability; labels retain each reply's sample size.
+**What it shows.** Replies to 1.e4 have different recorded White scores in the 1600–1799 rating band.
 
-**Reading.** Reply scores and their uncertainty differ within these specific groups; many intervals are wide.
+**How to read it.** Each panel shows one speed. Every plotted reply has at least 200 sampled games in a tested group. Lines show each reply’s own 95% interval; labels include game counts.
 
-**Limit.** The ordering does not establish objectively better defenses. These are marginal intervals around selected observations, not simultaneous ranking guarantees.
+**Keep in mind.** The order is based on observed scores. It does not establish the best defense, and the intervals do not account for selecting the highest or lowest reply.
 
 [Full-resolution PNG](../assets/figures/fig07_replies_e4.png){ .figure-link } · [PDF original](../assets/figures/fig07_replies_e4.pdf){ .figure-link } · [Research context](../research/h2.md)
 
@@ -111,11 +113,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![White scores and marginal 95% confidence intervals after eligible Black replies to 1.d4 in the 1600–1799 band, separated by speed.](../assets/figures/fig08_replies_d4.png){ loading=lazy .research-figure }
 
-**Method.** Eligibility is evaluated independently within each speed-band cell. The dotted line is the 50% scoring reference, not the omnibus comparison between replies.
+**What it shows.** Replies to 1.d4 have different recorded scores and levels of uncertainty in the 1600–1799 band.
 
-**Reading.** Available replies and precision vary by time control, making coverage essential to interpretation.
+**How to read it.** Each speed panel can contain different replies because the minimum game count is checked separately. The dotted line marks a White score of 50%.
 
-**Limit.** An interval crossing 50% does not decide the cell's H2 test, and the selected score extremes are not causal defense values.
+**Keep in mind.** Whether one reply’s interval crosses 50% does not decide whether the replies differ from each other. That requires the separate group test.
 
 [Full-resolution PNG](../assets/figures/fig08_replies_d4.png){ .figure-link } · [PDF original](../assets/figures/fig08_replies_d4.pdf){ .figure-link } · [Research context](../research/h2.md)
 
@@ -125,11 +127,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Maximum-minus-minimum eligible White score in percentage points for e4 and d4 cells; blank cells have insufficient eligible replies.](../assets/figures/fig09_reply_effect_heatmap.png){ loading=lazy .research-figure }
 
-**Method.** The range is descriptive and uses observed extremes after applying reply thresholds. Both panels share a color scale. This is a range plot, not a significance map.
+**What it shows.** The gap between the highest and lowest reply scores varies across groups. The median gap is 6.24 percentage points.
 
-**Reading.** Observed ranges vary across the tested cells; the median is 6.24 percentage points.
+**How to read it.** Each square summarizes one first-move, speed and rating group. Blank squares have too few eligible replies. Both panels use the same color scale.
 
-**Limit.** Large ranges can reflect sparse replies and selection noise. A blank cell does not show a zero effect, and color alone does not establish a corrected rejection.
+**Keep in mind.** This shows observed ranges, not test decisions. Wide ranges can reflect sampling noise, especially when selecting extreme scores. A blank is not a zero difference.
 
 [Full-resolution PNG](../assets/figures/fig09_reply_effect_heatmap.png){ .figure-link } · [PDF original](../assets/figures/fig09_reply_effect_heatmap.pdf){ .figure-link } · [Research context](../methodology/robustness.md)
 
@@ -139,11 +141,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Null distributions of the sample-size-weighted standard deviation of reply scores for the prespecified e4 and d4 blitz cells at rating 1600–1799.](../assets/figures/fig10_h2_null_spread.png){ loading=lazy .research-figure }
 
-**Method.** Each histogram uses 10,000 simulations under a shared White/Draw/Black distribution. A vertical line shows the observed spread; titles give the score-test q-value and included N.
+**What it shows.** In these two example groups, the e4 score spread gives stronger evidence of reply differences than the d4 spread.
 
-**Reading.** The observed e4 spread is more incompatible with its null than the d4 spread; the d4 score test does not pass the 0.05 corrected threshold.
+**How to read it.** Both groups use blitz games at ratings 1600–1799. The bars show 10,000 simulations with no reply differences; the vertical line shows the observed spread. The titles report adjusted test values.
 
-**Limit.** These two representative cells do not summarize every H2 group, and the score-spread statistic does not replace the separate full-distribution test.
+**Keep in mind.** These are two examples, not a summary of all groups. The d4 score test does not pass the 0.05 adjusted threshold; the separate win/draw/loss test answers a different question.
 
 [Full-resolution PNG](../assets/figures/fig10_h2_null_spread.png){ .figure-link } · [PDF original](../assets/figures/fig10_h2_null_spread.pdf){ .figure-link } · [Research context](../methodology/uncertainty.md)
 
@@ -153,11 +155,11 @@ Historical `q1_*`, `q2_*` and `draw_rate_by_band.*` graphics use unverified Expl
 
 ![Primary, speed and rating-band weighted White-score estimates with marginal 95% confidence intervals and observed sample sizes.](../assets/figures/h1_score_confidence_intervals.png){ loading=lazy .research-figure }
 
-**Method.** The horizontal forest plot uses 10,000 bootstrap replicates and a 50% reference line. Its axis focuses on the estimated scores; read percentage labels rather than interpreting line length as a zero-based bar.
+**What it shows.** The overall White-score interval lies above 50%, while estimates and precision vary across speeds and ratings.
 
-**Reading.** The primary interval lies above 50%, while group precision and point estimates vary.
+**How to read it.** The point is a weighted score and the line is its 95% interval from 10,000 bootstrap repetitions. Labels show actual sampled game counts. The axis is enlarged around the scores.
 
-**Limit.** Marginal intervals do not provide simultaneous coverage or establish causal differences across overlapping subgroups.
+**Keep in mind.** Each interval applies separately. The chart does not guarantee that every interval covers its target at once, or establish cause and effect.
 
 [Full-resolution PNG](../assets/figures/h1_score_confidence_intervals.png){ .figure-link } · [PDF original](../assets/figures/h1_score_confidence_intervals.pdf){ .figure-link } · [Research context](../research/h1.md)
 

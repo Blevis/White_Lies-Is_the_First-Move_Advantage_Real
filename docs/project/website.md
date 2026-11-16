@@ -1,91 +1,76 @@
 ---
 title: Website maintenance
-description: Build, validate and deploy the White Lies MkDocs publication without running or modifying the scientific analysis.
+description: Preview, check and publish the MkDocs website using the saved analysis outputs.
 ---
-# Website maintenance
 
-The publication uses **MkDocs 1.6.1 and Material for MkDocs 9.8.1**, with local fonts, modular CSS, vanilla JavaScript and precomputed aggregate results. There is no server, live chess engine, analytics service or game-level download in the site. Python **3.11 or newer** is required.
+# Maintain the website
 
-## Preview locally
+The website uses the versions pinned in `requirements-docs.txt`: **MkDocs 1.6.1** and **Material for MkDocs 9.8.1**. It reads saved study results. Building it does not run the research analysis or download games.
 
-From the repository root, use a separate documentation environment:
+## Preview and check
 
-=== "Linux / macOS"
-
-    ```bash
-    python3 -m venv .venv-docs
-    source .venv-docs/bin/activate
-    python -m pip install -r requirements-docs.txt
-    python -m mkdocs serve
-    ```
-
-=== "Windows PowerShell"
-
-    ```powershell
-    py -3 -m venv .venv-docs
-    .\.venv-docs\Scripts\Activate.ps1
-    python -m pip install -r requirements-docs.txt
-    python -m mkdocs serve
-    ```
-
-Open `http://127.0.0.1:8000/`. Search, theme switching, the explorer and board work from the static build too. Serve the output over HTTP; browser `file://` access does not permit the explorer's JSON request.
-
-## Synchronized publication assets
-
-`scripts/build_docs_assets.py` reads only existing result tables, reports and final figure files. A MkDocs hook calls it before every build. It never imports the research pipeline or reads the game-level Parquet input.
-
-- The report and audit reading pages are synchronized from their authoritative Markdown sources.
-- Original Markdown reports remain downloadable, byte for byte.
-- The eleven final figure pairs are copied with their original PNG and PDF bytes.
-- `assets/data/research.json` contains typed aggregate rows, explicit nulls and SHA-256 hashes of its inputs.
-- Validation checks confirm the primary estimate, confidence interval, sample count, H2 decision families and source accounting before publishing.
-
-Do not edit generated assets to change a research result. Update and validate the authoritative outputs first, then regenerate:
+Use **Python 3.11 or newer**. Follow [Set up Python](../reproducibility/installation.md) to create the documentation environment, then run from the repository root:
 
 ```bash
-python scripts/build_docs_assets.py
+python -m mkdocs serve
+```
+
+Open the local address printed by MkDocs, usually `http://127.0.0.1:8000/`. Serve the site over HTTP so the explorer can load its data file.
+
+Before publishing, run:
+
+```bash
 python scripts/build_docs_assets.py --check
 python -m mkdocs build --strict
 python scripts/check_site.py
+git diff --check
 ```
 
-The last command checks internal pages, anchors and local assets in the built site. `site/`, `.venv-docs/` and browser screenshots in `artifacts/` are ignored by Git.
+The compiled pages go to `site/`, which is ignored by Git.
 
-!!! note "Research regeneration and the README"
-    The existing research pipeline's default run writes a generated research README. To preserve publication documentation while reproducing the study, use `python -m src.run_analysis --output-root /path/to/separate-output`. The scientific pipeline has been preserved unchanged. See [Running the analysis](../reproducibility/running.md).
+## Where to edit
 
-## GitHub Pages
+| Change | Source to edit |
+| --- | --- |
+| Main story and study reference | `docs/research/`, except the generated report page |
+| Homepage | `docs/index.md` |
+| Menu and reading order | `mkdocs.yml` |
+| Chart explanations and supporting guides | Other Markdown pages under `docs/` |
+| Full report or research audit | Original files in `reports/`, then regenerate the site copies |
+| Explorer labels and behavior | `docs/assets/js/explorer.js` |
+| Layout and colors | `docs/assets/css/site.css` and `explorer.css` |
 
-The repository's default branch is **`main`**. The [live publication](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/) was verified on **November 15, 2026**. The [successful deployment run](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/actions/runs/43626779084) built and deployed commit `da103f682cb76b3778f098df303fae4f732c3ffd`. The earlier November 14 audit correctly recorded Pages as disabled; the implementation was subsequently merged and deployed.
+The main story follows **questions → approach → White's score → Black's replies → checks and limits → conclusion**. Keep short explanations in that order, define terms before using them, and link to the detailed methods for formulas. The [study reference](../research/reference.md) collects the graph index, formulas, glossary and code map. Keep Study pages written for readers: no speaker prompts, timing plans or presentation instructions.
 
-The workflow in `.github/workflows/docs.yml` validates pull requests and builds deployments on pushes to `main` or manual runs from `main`. It uses the official checkout, Python setup, Pages configuration, artifact upload and Pages deployment actions. Only the deployment job has Pages write and identity-token permissions. Its concurrency group prevents competing Actions deployments.
+## Generated files
 
-!!! warning "Finish the Pages publishing-source setting"
-    The Pages API currently reports `build_type: legacy`, with `main` and `/` as its source, although the custom deployment succeeded. In **Settings → Pages → Build and deployment → Source**, select **GitHub Actions**. This prevents branch-based publishing from competing with the custom workflow. The attempted API update returned HTTP 404 with the available credential, so the setting must be changed in the repository UI by an authorized maintainer.
+`scripts/build_docs_assets.py` copies reports and the eleven final PNG/PDF figure pairs, and exports group summaries to `docs/assets/data/research.json`. The MkDocs build runs this step automatically. The export contains no individual games or player names.
 
-Confirm that the `github-pages` environment permits deployment from `main`. Future website changes are published after a successful workflow on `main`; local changes still need to be committed and merged before they appear online.
+To refresh these files explicitly:
 
-The verified canonical address is `https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/`. The configuration now uses that verified address as its default. During deployment, **`actions/configure-pages` supplies the current `base_url`** through `SITE_URL`, accommodating any subsequently configured custom domain. Local previews retain canonical links to the public publication; to test another deployment prefix, set `SITE_URL` explicitly.
+```bash
+python scripts/build_docs_assets.py
+```
 
-The workflow uploads `site/`; it never commits compiled pages or raw games. It installs documentation dependencies only and does not run the expensive analysis. See GitHub's [official custom Pages workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
+Edit source reports and results before regenerating their copies. Original report downloads and figures are kept byte for byte. Source-file checksums record which analysis outputs were used.
 
-## Browser verification
+!!! note "Running the analysis can rewrite documentation"
+    The scientific pipeline's default run regenerates a research README. For a separate reproduction, use `python -m src.run_analysis --output-root /path/to/separate-output`. See [Run the analysis](../reproducibility/running.md).
 
-Browser tooling is optional and separate from production dependencies. The browser smoke script exercises responsive layout, search, themes, filters, sparse cells and board moves against a served build. See the [website implementation report](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/reports/WEBSITE_IMPLEMENTATION.md) for the exact executed checks and screenshots.
+## Publish with GitHub Pages
 
-Accessibility features include semantic regions, visible focus, explicit chart labels and interval text, keyboard-operable native controls, reduced motion, local fonts and dark/light palettes. These checks are practical verification, not a claim of formal WCAG certification.
+The workflow in `.github/workflows/docs.yml` checks pull requests. Pushes to `main`, or manual runs from `main`, also build and deploy the website through GitHub Actions.
 
-## Modular customization
+In the repository's **Settings → Pages → Build and deployment → Source**, use **GitHub Actions**. Make sure the `github-pages` environment allows deployment from `main`.
 
-| Location | Responsibility |
-|---|---|
-| `mkdocs.yml` | Navigation, Material features, Markdown extensions and asset hook |
-| `docs/index.md` | Editorial landing page |
-| `docs/assets/css/site.css` | Publication tokens, typography and responsive composition |
-| `docs/assets/css/explorer.css` | Dashboard and chessboard components |
-| `docs/assets/js/site.js` | Progressive reveal and on-demand local formula rendering |
-| `docs/assets/js/explorer.js` | Aggregate filtering, charts, tables and explanatory moves |
-| `overrides/` | Thin Material templates and social metadata |
-| `scripts/build_docs_assets.py` | Deterministic source synchronization and checks |
+The configured default address is [the White Lies website](https://blevis.github.io/White_Lies-Is_the_First-Move_Advantage_Real/). During deployment, the workflow supplies the Pages base URL through `SITE_URL`. It uploads the built `site/` folder without committing compiled pages or raw games. Local edits appear online after they are committed, merged and successfully deployed.
 
-Fonts are local subsets of **Fraunces** and **Manrope**, obtained from the [Google Fonts repository](https://github.com/google/fonts); their SIL Open Font License files are alongside the fonts. Formula rendering uses local **KaTeX 0.16.22** with its MIT license retained. The hero illustration and chess identity mark were created for this site. These third-party asset licenses do not imply a new license for the research repository.
+## Browser checks
+
+The optional `scripts/smoke_site.py` script checks themes, search, filters, opening moves and layouts at several widths. It requires Playwright separately from the website dependencies; its header gives setup instructions.
+
+Also read through the six study pages in order. Check mobile tables, menu labels, next-page links, the study reference and any expandable technical details. The [validation guide](../reproducibility/validation.md) explains the difference between research checks and website checks.
+
+## Fonts and other assets
+
+The site bundles Fraunces and Manrope fonts with their SIL Open Font Licenses. Formula rendering uses KaTeX 0.16.22 with its MIT license. Those licenses apply to the bundled third-party assets; they do not assign a new license to the research project.

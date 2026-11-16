@@ -1,38 +1,70 @@
 ---
-title: The research question
-description: Two empirical questions about White's scoring advantage and Black's immediate replies in March 2025 Lichess games.
+title: 1. Questions and concepts
+description: Two chess questions, one sample, and a simple way to measure the result.
 ---
 
-# Does the first move really matter?
+# 1. Does moving first help?
 
-Chess gives White the first move. That simple asymmetry makes a compelling statistical question: in recorded play, does White receive more than half the available points?
+We studied **836,070 Lichess games from March 2025** to answer two questions:
 
-The study follows **836,070 sampled rated-standard Lichess games played March 1–31, 2025**. It investigates scoring patterns across blitz, rapid and classical games, with a second analysis of Black's immediate replies to `1.e4` and `1.d4`.
+- **H1:** Does White earn more than half the points?
+- **H2:** After `1.e4` or `1.d4`, are outcomes different after different replies by Black?
 
-## Two questions, two levels of evidence
+## Score, win rate and draw rate
 
-| Question | Statistical target | What the answer describes |
-| --- | --- | --- |
-| **H1 — the first move** | Is expected White score greater than 0.50? | A weighted scoring association in the eligible March population |
-| **H2 — the first reply** | Within a first-move, speed and rating cell, do eligible replies have equal outcome distributions? | Associations between chosen replies and recorded outcomes |
-
-H2 also tests reply-score spread separately. Two distributions can have the same expected score while differing in how often games end in a draw.
-
-## Score is more than winning
-
-A White win earns one point, a draw earns half a point and a Black win earns zero points for White:
+A win earns **1 point**, a draw **½**, and a loss **0**.
 
 $$
-S = \frac{W + D/2}{W+D+B}.
+\text{White score}=\frac{\text{White wins}+\tfrac12\text{draws}}{\text{all games}}.
 $$
 
-This is a **score**, not a win probability. The primary weighted estimate is 51.776% even though White's weighted outright-win share is 49.533%. Draws account for the difference.
+For example: **48 wins + 8 draws in 100 games = 52% score, but 48% win rate.**
 
-## What would a causal answer require?
+**Score includes draws. Win rate counts wins only.**
 
-Recorded colors, opponents, time controls and opening replies do not constitute a randomized experiment. Ratings imperfectly describe strength, recurring players connect observations, and different players choose different defenses. A measured association cannot establish what would happen if the same players were assigned a different color or reply under otherwise identical conditions.
+??? info "Outcome formulas"
+    Let $W,D,B$ count White wins, draws and Black wins, with $N=W+D+B$.
 
-!!! note "The scope of the claim"
-    These results describe eligible Lichess games in one month. They do not resolve the theoretical value of perfect chess, identify the best defense, or establish a universal effect of moving first.
+    $$
+    S=\frac{W+D/2}{N}, \qquad
+    P(W)=\frac{W}{N}, \qquad
+    P(D)=\frac{D}{N}, \qquad
+    P(B)=\frac{B}{N}.
+    $$
 
-Continue with [H1: the scoring advantage](h1.md), [H2: opening replies](h2.md), or the [authoritative full report](report.md).
+    Excluding draws gives the decisive-game win rate:
+
+    $$
+    P(W\mid \text{decisive})=\frac{W}{W+B}.
+    $$
+
+    An empty group has no score. An all-draw group scores 50% but has no decisive-game win rate. Undefined values remain missing.
+
+## Three terms to know
+
+| Term | Meaning |
+| --- | --- |
+| **Rating** | An estimate of player strength |
+| **Time control** | Game speed: blitz, rapid or classical |
+| **Ply** | One player's move; 20 plies = 10 moves by each side |
+
+## What the study can tell us
+
+The games reveal **patterns in real play**. They do not prove cause and effect: players differ in strength and choose their openings.
+
+The scope is **one month, one platform and three rated game speeds**.
+
+??? info "The hypotheses and source"
+    Lichess publishes monthly archives with results, ratings and moves. We use those records to test a familiar claim about White's advantage.
+
+    For H1, the null is equal scoring; the alternative is a score above 50%:
+
+    $$
+    H_0: E[Y]=0.50, \qquad H_1: E[Y]>0.50.
+    $$
+
+    The planned test is one-sided at a 0.05 threshold. For H2, the null says all eligible replies within one first-move, speed and rating group share the same win/draw/loss probabilities.
+
+    The [study reference](reference.md) provides the glossary, graphs and formulas. [Detailed methods](../methodology/data.md) gives the full technical explanation.
+
+**Next: [2. Collect and prepare the data →](approach.md)**

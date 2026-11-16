@@ -1,39 +1,54 @@
 ---
 title: Sampling and exclusions
-description: Deterministic game-ID sampling, unequal inclusion rates, eligibility rules and observed sample accounting.
+description: Which games were eligible, how games were selected, and why the analysis uses weights.
 ---
 
-# Who enters the analysis?
+# How games entered the sample
 
-Eligible records are rated standard blitz, rapid or classical games with numeric player ratings, a valid result, a Normal or Time forfeit termination, no BOT title and at least two plies. A ply is one player's move. Legitimate resignations and short games are retained.
+The collector kept a repeatable sample of eligible games. Some less common groups were sampled more often, so the main analysis uses weights to account for that difference.
 
-## Deterministic sampling
+## Which games were eligible?
 
-The collector hashes each game ID with MD5 and compares the resulting fraction to the declared inclusion probability. This makes selection reproducible by ID. For statistical inference, that rule is approximated as pseudo-random Bernoulli sampling.
+Games needed to be rated standard **blitz, rapid or classical**, with numeric ratings for both players and a valid result. They also needed a recorded ending of **Normal** or **Time forfeit**, no BOT-titled player, and at least **two plies**. A ply is one individual player's move.
 
-The base inclusion probability is **1%**. Classical games and rating bands with lower bounds **2200 or 2500** use **10%**. These are overrides, not compounded sampling probabilities. The sample contains **571,572 games at 1%** and **264,498 at 10%**.
+Valid short games and resignations were kept. The resignation flag is an estimate from the game record and was not used to exclude games.
 
-An unweighted pooled score therefore reflects the oversampled composition. The primary estimate uses weights of 100 or 10 respectively to estimate the eligible source-game mixture.
+## How were games selected?
 
-## Rating bands
+Each game ID was converted to a number using a hash. A game was selected if that number fell below its group's sampling threshold. The same ID and rule always produce the same selection.
 
-Bands use the floor of the opponents' mean Elo, with lower bounds **0, 1000, 1200, 1400, 1600, 1800, 2000, 2200 and 2500**. The first means below 1000; the last means 2500+. The 2200 band extends through 2499. These are Lichess ratings for the relevant speed, not FIDE strength categories.
+| Game group | Sampling rate | Weight per sampled game |
+| --- | ---: | ---: |
+| Most eligible games | 1% | 100 |
+| Classical games, or rating bands starting at 2200 or 2500 | 10% | 10 |
 
-## Source accounting
+The higher rate applies once, even if a game meets both conditions. The sample contains **571,572 games selected at 1%** and **264,498 selected at 10%**.
 
-| Sequential rejection rule | Rejected games |
-| --- | ---: |
-| Unsupported speed | 37,351,463 |
-| Invalid rating | 0 |
-| Invalid result | 1,310 |
-| Unsupported termination | 188,228 |
-| BOT title | 162,871 |
-| Fewer than two plies | 210 |
+Without weights, the combined result gives extra influence to the groups sampled more often. Weighting estimates the mix of eligible games in the original archive. For the statistical calculations, hash selection is treated as approximately random sampling.
 
-Another **58,972,199** games were counted as not sampled, leaving 836,070 retained. The minimum-plies rule is checked after hash selection, so its count concerns sampled candidates. These sequential categories balance the manifest's scanned total; they are not independent counts of every possible violation.
+## How were ratings grouped?
 
-## Analysis eligibility is a separate layer
+Bands use the average of the two players' Lichess ratings, rounded down. Their lower bounds are **0, 1000, 1200, 1400, 1600, 1800, 2000, 2200 and 2500**.
 
-H1 includes all collected bands, with subgroup tests requiring at least 200 games and 20 decisive outcomes. H2 restricts the primary analysis to bands at least 1200 and replies with at least 200 games, requiring two such replies per cell. Insufficient groups remain visible as unavailable or descriptive results.
+The first band means below 1000; the last means 2500 or above. The 2200 band covers 2200–2499. These are Lichess ratings for the relevant game speed, not FIDE rating categories.
 
-Source: [full report, dataset and methodology](../research/report.md), `results/cleaning_ledger.csv`, and the collection manifest. See [statistical methods](statistics.md) for weighting and test families.
+## Which sampled groups could be tested?
+
+- **White-score analysis (H1):** all collected rating bands are included. Subgroup tests need at least 200 games and 20 games with a winner.
+- **Reply analysis (H2):** main tests use rating bands starting at 1200. Each reply needs 200 games, and each comparison group needs at least two eligible replies.
+
+Groups with too little data are marked as unavailable or shown only as descriptions. Missing tests do not show that outcomes are equal.
+
+??? info "Full source accounting"
+    | Rejection rule, applied in order | Rejected games |
+    | --- | ---: |
+    | Unsupported speed | 37,351,463 |
+    | Invalid rating | 0 |
+    | Invalid result | 1,310 |
+    | Unsupported ending | 188,228 |
+    | BOT title | 162,871 |
+    | Fewer than two plies | 210 |
+
+    Another **58,972,199** games were not selected by sampling, leaving **836,070** retained games. The minimum-length rule was checked after hash selection, so that count concerns selected candidates. Each rejected game is counted under the first rule that excluded it.
+
+See [scores, weights and tests](statistics.md) for the calculations, or the [full report](../research/report.md#3-dataset) for the recorded dataset details.

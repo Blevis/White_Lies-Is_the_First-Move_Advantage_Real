@@ -3,13 +3,13 @@ title: Validation and testing
 description: Separate scientific, artifact and website checks, with explicit limits on what passing checks establish.
 ---
 
-# Check the evidence and the presentation
+# Check the analysis and website
 
-Scientific validation and website validation answer different questions. A correct static build does not independently validate a research claim, and a correct result table does not guarantee a usable mobile chart.
+Check the analysis results and the website separately. A successful website build shows that the pages work, not that every research claim is valid.
 
-## Scientific regression suite
+## Analysis checks
 
-Run with the scientific dependencies installed:
+With the scientific environment active, run:
 
 ```bash
 python -m pytest -q
@@ -36,10 +36,10 @@ If aggregate outputs have intentionally changed, regenerate first with `python s
 
 Check the homepage, report and explorer at narrow and wide widths. Operate filters and the opening board with a keyboard; inspect empty states, chart intervals, table scrolling and the 50% benchmark. Confirm search, theme switching, navigation and reduced-motion behavior. Source and figure links must resolve from the GitHub Pages repository subpath.
 
-Filtering must select only recorded estimates. Missing subgroup combinations should explain their absence instead of interpolating a result. Weighted shares must remain distinct from observed raw counts, and selecting a reply must not change an omnibus cell test into a pairwise claim.
+Filters should display only saved estimates. Missing groups should explain why no result is available. Keep weighted percentages separate from actual game counts. Selecting one reply should not make the whole-group test look like a test of that move.
 
 ## Limits of validation
 
-A matching checksum establishes consistency with the local manifest; the monthly source is not independently rescanned. Neither automated tests nor a successful build establish causal identification, eliminate dependence assumptions, or authenticate the historical Explorer period.
+A matching checksum confirms agreement with the local manifest, without rescanning the original archive. Passing checks does not prove cause and effect, remove assumptions about related games, or verify the dates of the older Explorer data.
 
 See [provenance](../methodology/data.md), [uncertainty](../methodology/uncertainty.md) and the [research audit](../project/audit.md).

@@ -1,32 +1,42 @@
 ---
-title: Rating and player dependence
-description: Near-equal-rating restriction, equal-rating spline standardization and dyadic shared-player sensitivity.
+title: Rating and player checks
+description: What happens when ratings are closely matched, modeled as equal, or games share a player.
 ---
 
-# Accounting for ratings and recurring players
+# Checking ratings and repeated players
 
-The primary weighted score pools observed games. Two additional approaches examine measured rating imbalance, and a dependence sensitivity recognizes that the same player can appear in many games.
+White might score more partly because of differences between the players. We checked measured rating differences in two ways, and separately checked how repeated players affect uncertainty.
 
-## Restrict to near-equal ratings
+## 1. Keep players with similar ratings
 
-The main restriction keeps games with an absolute White–Black rating difference of at most **25 Elo points**. It retains **327,230 games**, yielding a weighted White score of **51.819%** (95% CI **51.637%–52.004%**). Cutoffs of 10, 50 and 100 appear as additional sensitivity analyses.
+We kept games where the two players' ratings differed by at most **25 points**. This left **327,230 games** and a weighted White score of **51.819%**, with a **95% confidence interval of 51.637%–52.004%**.
 
-This changes the study population. Similar ratings do not imply identical latent ability, and restrictions reduce available sample sizes and H2 coverage.
+White's score remained above 50%. Further checks used rating gaps of 10, 50 and 100 points.
 
-## Standardize to equal ratings
+This restriction studies a smaller set of games. Similar ratings also do not guarantee equal playing strength. In the reply analysis, less data and changed group coverage make the evidence much weaker.
 
-An inverse-probability-weighted score-mean regression uses speed-band intercepts and a natural cubic spline of White-minus-Black rating difference. Interior knots are −200, −50, 0, 50 and 200. It models the 0/0.5/1 outcome directly.
+## 2. Use a model to compare equal ratings
 
-Predictions are evaluated at zero rating difference and averaged over the observed IPW speed-band composition. The standardized score is **51.886%**, with a **dyadic 95% interval of 51.707%–52.064%**. One sparse-cell row is omitted; the model uses 836,069 games, has full rank (32/32), and has no fitted predictions outside [0,1].
+We fitted a model connecting White's score to the rating gap, game speed and rating band. We then used it to estimate the score if the players' recorded ratings were equal.
 
-The model shares a rating curve across cells and does not use player-skill fixed effects. Its estimate is conditional on the model, not a causal effect of color.
+The estimated White score was **51.886%**, with a **95% interval of 51.707%–52.064%** that accounts for shared players. This supports the positive direction under the model's assumptions. It does not prove a causal effect of color.
 
-## Shared-player dependence
+??? info "Model specification"
+    The model is an inverse-probability-weighted score-mean regression. It uses speed-band intercepts and a shared natural cubic spline of White-minus-Black rating difference, with interior knots at −200, −50, 0, 50 and 200.
 
-The sample includes **567,922 distinct case-normalized player names**, with **296,939 recurring players**. Game N is not an independent-player count.
+    Predictions are evaluated at zero rating difference and averaged using the weighted speed-band mix. One sparse-cell row is omitted, leaving 836,069 games. The design has full rank, 32/32, and no fitted predictions fall outside [0,1]. The model does not include individual player-skill fixed effects.
 
-Dyadic sandwich covariance aggregates influence contributions for games sharing a player in either color and subtracts contributions for repeated unordered player pairs to avoid double counting. It permits shared-player dependence while assuming independence for disjoint-player games.
+## 3. Allow games involving the same player to be related
 
-For the original weighted mean, this sensitivity gives **51.655%–51.898%**. The method also supplies the rating-standardized interval and exploratory score tests for two prespecified H2 cells. It does not account for every temporal or network dependency, nor cluster every H2 simulation.
+The sample contains **567,922 distinct player names**, compared without regard to capitalization. Of these, **296,939** appear more than once.
 
-Source: [full report, rating and dependence adjustments](../research/report.md#rating-and-dependence-adjustments). The report cites [Aronow, Samii and Assenova's dyadic variance estimator](https://arxiv.org/abs/1312.3398).
+A shared-player uncertainty check gives a **51.655%–51.898%** interval for the main weighted score, close to the main bootstrap interval. This check also provides the equal-rating model's interval and exploratory score tests for two selected H2 groups.
+
+The check allows games sharing a player to be related. It does not account for every connection through time, tournaments or player networks, and it does not replace all H2 simulations.
+
+??? info "Shared-player calculation"
+    The dyadic sandwich covariance estimator combines contributions from games sharing either player. It subtracts contributions for repeated unordered player pairs to avoid double counting, and assumes games with no shared player are independent.
+
+    The [full report](../research/report.md#rating-and-dependence-adjustments) cites the dyadic variance method and records its implementation.
+
+Continue with [testing other analysis choices](robustness.md), or return to [checks and limits](../research/limitations.md).

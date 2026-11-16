@@ -1,47 +1,76 @@
 ---
-title: Statistical methodology
-description: White score, inverse-probability weighting, H1 and H2 test structures and the distinction between score and outcome distribution.
+title: Scores, weights and tests
+description: The measures and comparisons used to answer the two research questions.
 ---
 
-# From game outcomes to estimates
+# How the comparisons work
 
-The analysis keeps three related quantities separate: expected score, outright-win probability and win probability among decisive games.
+We measure White's share of points, adjust for unequal sampling rates, then test the overall score and differences between opening replies.
 
-## Outcome definitions
+## Three measures that answer different questions
 
-For each game, White's score is $Y_i=1$ for a win, $Y_i=0.5$ for a draw and $Y_i=0$ for a loss. With observed outcome counts $W,D,B$ and $N=W+D+B$:
+| Measure | Calculation | Question it answers |
+| --- | --- | --- |
+| White score | (White wins + half the draws) / all games | What share of points did White earn? |
+| White win rate | White wins / all games | How often did White win? |
+| White win rate in games with a winner | White wins / (White wins + Black wins) | When the game was not drawn, how often did White win? |
 
-$$
-S=\frac{W+D/2}{N}, \qquad P(W)=\frac{W}{N}, \qquad
-P(W\mid\text{decisive})=\frac{W}{W+B}.
-$$
+An empty group has no score. A group containing only draws has a score of 50%, but no win rate among games with a winner. Undefined values remain missing, rather than being replaced by zero.
 
-Undefined quantities for empty groups or groups with no decisive games remain missing. They are not replaced by zero.
+## Why use weights?
 
-## Inverse-probability weighting
+Some games had a 1% sampling rate and others a 10% rate. Their weights are 100 and 10 respectively. We multiply each game's score by its weight, add those weighted scores, then divide by the sum of weights.
 
-Each game's inclusion probability $p_i$ determines its weight:
+The result estimates White's score for the original eligible game mix. **The sample size is still 836,070 observed games.** The larger total represented by the weights does not add new observations.
 
-$$
-w_i=\frac{1}{p_i}, \qquad
-\widehat S=\frac{\sum_i w_iY_i}{\sum_i w_i}.
-$$
+??? info "Score and weighting formulas"
+    Let $W$, $D$ and $B$ be White wins, draws and Black wins. Then:
 
-This ratio estimates the eligible source-game composition after unequal-rate sampling. Its denominator is an estimated population total, not an independent sample size. The **836,070 observed records** determine the available information. Kish effective N describes weight dispersion and is not a count of independent players.
+    $$
+    S=\frac{W+D/2}{W+D+B}.
+    $$
 
-## H1: compare White's score with 50%
+    For a game with score $Y_i$ and inclusion probability $p_i$:
 
-The primary one-sided hypothesis concerns the overall weighted population. Null simulations preserve stratum draw probabilities and set White and Black win probabilities equal within each stratum. This stratum-by-stratum symmetry is stronger than a pooled-mean null alone. A separate design-based Wald check directly addresses the pooled mean and supports the same conclusion.
+    $$
+    w_i=\frac{1}{p_i}, \qquad
+    \widehat S=\frac{\sum_i w_iY_i}{\sum_i w_i}.
+    $$
 
-The exact decisive-game binomial cross-check applies to unweighted or equal-weight estimates. It is not an exact test for the unequal-weight pooled score. Details of the bootstrap and finite-simulation p-values are on the [uncertainty page](uncertainty.md).
+    This is a ratio estimate. Its weighted denominator estimates a population total. The reported Kish effective sample size describes how unequal the weights are; it does not count independent players.
 
-## H2: compare replies inside a fixed cell
+## H1: is White's score above 50%?
 
-At each reply's observed sample size, the null simulates outcomes from the cell's pooled White/Draw/Black proportions. Two statistics are calibrated against 10,000 simulated tables:
+The main test compares the overall weighted score with **50%**. It asks whether a score at least as high as the observed one would be unusual in simulated games where White and Black have equal winning chances.
 
-1. The sample-size-weighted standard deviation of reply scores tests scoring differences.
-2. Pearson's full-distribution statistic tests differences in all three outcome probabilities, re-estimating the pooled mix in every simulated table.
+The simulations keep the draw rate in each speed-and-rating group. They set White and Black win rates equal within each group. A separate check directly tests the overall average and supports the same conclusion.
 
-The observed maximum-minus-minimum range and its supplementary p-value are descriptive supporting outputs. The two primary testing families have separate multiplicity corrections. A reply's contrast with the remaining eligible replies is exploratory, and its interval is not adjusted for selection.
+An exact binomial check uses only games with a winner. It applies to unweighted or equal-weight results, not the combined unequal-weight score.
 
-Source: [full report, methodology](../research/report.md#4-methodology); implementations in `src/stats.py`, `src/hypothesis_h1.py` and `src/hypothesis_h2.py`.
+## H2: do outcomes differ between replies?
+
+Within each first-move, speed and rating group, we simulate games where all eligible replies share the same White-win, draw and Black-win probabilities. We keep each reply's observed sample size and compare two measures:
+
+1. **Score differences:** how spread out the reply scores are, giving more weight to replies with more games.
+2. **Win/draw/loss differences:** how much the three outcome proportions differ between replies.
+
+The tests use 10,000 simulations. Each set of tests has its own adjustment for multiple comparisons. Comparing a selected reply with the rest is exploratory; it does not establish a best defense.
+
+??? info "Technical H2 statistics"
+    The score test uses the sample-size-weighted standard deviation of reply scores. The full-outcome test uses Pearson's statistic, with the pooled outcome mix estimated again in each simulated table.
+
+    The maximum-minus-minimum score range and its supplementary p-value are descriptive supporting results. Intervals for individual reply contrasts are not adjusted for selecting extreme scores.
+
+## Terms used in the results
+
+| Term | Meaning here |
+| --- | --- |
+| Expected score | Average points earned per game |
+| Confidence interval | A range showing uncertainty around an estimated score under the method's assumptions |
+| Null model | The equal-score or equal-outcome scenario used for the comparison |
+| p-value | How often that model produces a result at least as extreme as the observed one |
+| Adjusted p-value, or q-value | A test result adjusted for running a family of comparisons |
+| Cell | A group with a fixed first move, speed and rating band in the reply analysis |
+| Percentage point (pp) | The difference between percentages: 51.8% is 1.8 points above 50% |
+
+See [understanding uncertainty](uncertainty.md) for intervals and testing limits, or the [full methodology](../research/report.md#4-methodology) for implementation details.

@@ -1,45 +1,56 @@
 ---
-title: Confidence intervals and testing
-description: Sampling-aware bootstrap intervals, finite Monte Carlo resolution, multiplicity correction and shared-player dependence assumptions.
+title: Understanding uncertainty
+description: How to read confidence intervals, p-values and adjustments for multiple tests.
 ---
 
-# What the uncertainty means
+# How certain are the results?
 
-The final analysis fixes the seed at **202503** and uses **10,000 replicates**. Intervals and tests are precomputed in Python; website filters select recorded results and do not run new inferential tests.
+A score calculated from a sample is an estimate. Confidence intervals show its uncertainty, while statistical tests compare it with a defined scenario such as equal scoring.
 
-## H1 bootstrap intervals
+The analysis uses **10,000 repeated simulations** and a fixed random seed of **202503**. The website displays the saved results; changing a filter does not run a new test.
 
-Weighted H1 compresses observed games by speed, rating band and outcome. Poisson count multipliers are equivalent to independent Poisson(1) observation multipliers. Centered deviations are rescaled by $\sqrt{1-p}$ for the Bernoulli finite-population correction.
+## Read a confidence interval
 
-Both the weighted numerator and denominator are recomputed for each replicate. This allows uncertainty in stratum mass as well as outcomes. The reported 95% interval uses the bootstrap percentiles. Unweighted sensitivity uses an analogous Poisson bootstrap without finite-population scaling.
+The main White score is **51.776%**, with a **95% confidence interval of 51.653%–51.899%**.
 
-These are **pointwise intervals**, not simultaneous guarantees across all displayed groups. Their interpretation depends on the sampling approximation and outcome-dependence assumptions.
+The point is the estimated score. The interval shows uncertainty around that estimate under the analysis assumptions. A narrower interval means greater precision, not a larger advantage.
 
-## Monte Carlo p-values have a floor
+A method producing 95% confidence intervals aims to cover the target score in 95% of repeated samples under those assumptions. It does not assign a 95% probability to this particular fixed interval, describe 95% of individual game outcomes, or remove bias from player selection.
 
-The one-sided H1 p-value is:
+Each displayed interval applies to its own estimate. The whole collection is not a guarantee that every interval covers its target at once.
 
-$$
-p_{MC}=\frac{1+\#\{\text{simulated scores}\geq\text{observed score}\}}{10000+1}.
-$$
+## What does a small p-value mean?
 
-The smallest possible reported value is **1/10001 ≈ 9.999e-05**. A floor value means no simulated statistic was at least as extreme in this run. It does not mean the probability is zero, nor measure an exact probability below that resolution. H2 uses finite-simulation corrections as well.
+A p-value measures how often the null model produces a result at least as extreme as the observed one. A small value suggests that the model does not describe the observed result well.
 
-## H2 reply intervals
+It does not measure the probability that the hypothesis is true, the size of the scoring edge, or whether moving first caused the difference.
 
-Reply scores use a 10,000-replicate multinomial bootstrap. Sparse or constant outcomes use conservative simultaneous exact binomial bounds for White and Black win probabilities, transformed through $S=(1+P(W)-P(B))/2$.
+With 10,000 simulations, the smallest reported Monte Carlo p-value is **1/10001**, or about **0.0001**. The main H1 result reaches that limit: none of those simulations produced a score as high as the observed score. It does not mean the probability is zero or that we know its exact value below that limit.
 
-Those reply intervals are marginal. Selecting the highest and lowest observed replies introduces extra uncertainty that these intervals do not correct. The full collection of replies should not be read as a definitive ranking.
+## Why adjust for many tests?
 
-## Multiplicity and dependence
+Running many tests creates more opportunities to flag differences by chance. The study uses **Benjamini–Hochberg adjustment** to address this across defined sets of tests. The tables label the adjusted values as **q-values** and use a 0.05 threshold.
 
-| Family | Correction scope |
+| Set of tests | Adjustment scope |
 | --- | --- |
-| Primary H1 | One prespecified test; excluded from subgroup correction |
-| Secondary H1 | 38 eligible speed, band and speed-by-band tests together |
-| H2 score spread | 35 eligible primary cells |
-| H2 full distribution | A separate family of the same 35 cells |
+| Main overall H1 test | One planned test, kept separate |
+| H1 subgroups | 38 eligible tests across speeds, ratings and their combinations |
+| H2 score differences | 35 eligible first-move, speed and rating groups |
+| H2 win/draw/loss differences | A separate set of tests for the same 35 groups |
 
-Benjamini–Hochberg adjustment uses its standard dependence assumptions. Overlapping subgroups and recurring players limit literal false-discovery guarantees. A dyadic sensitivity analysis permits shared-player covariance for H1 and two prespecified H2 cells, while assuming disjoint-player games are independent. It does not replace all H2 simulations with clustered tests.
+The adjustment relies on assumptions about relationships between tests. Repeated players and overlapping groups limit how strictly its usual false-discovery guarantees apply. A test that does not pass the threshold does not prove equal outcomes.
 
-Sources: [full report, methods](../research/report.md#4-methodology), [research audit](../project/audit.md), and [rating and dependence adjustments](ratings.md).
+## Why repeated players matter
+
+Games involving the same player may be related. Most main simulations treat games as independent. A separate shared-player check allows related outcomes when games share a player, for H1 and two selected H2 groups. It still assumes games with no shared player are independent.
+
+See [rating and player checks](ratings.md) for the scope of that check.
+
+??? info "How the intervals are calculated"
+    **H1:** a sampling-aware Poisson multiplier bootstrap varies observed counts by speed, rating band and outcome. It recalculates both the weighted score total and the total weight on each repetition. Centered deviations use $\sqrt{1-p}$ to account for the sampling fraction. The interval uses bootstrap percentiles. The unweighted check omits that finite-population scaling.
+
+    **H2:** each reply uses a multinomial bootstrap. Sparse or constant-outcome groups use conservative exact binomial bounds for White and Black win probabilities, transformed through $S=(1+P(W)-P(B))/2$.
+
+    Individual reply intervals are not adjusted for searching for the highest or lowest score. They cannot guarantee an ordering of defenses.
+
+See the [full methods](../research/report.md#4-methodology) and [research audit](../project/audit.md) for the recorded statistical choices.

@@ -7,7 +7,7 @@ description: The original scientific audit, prespecified analysis decisions and 
 
 [Download the original Markdown](../assets/reports/implementation_audit.md) · [View research source](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/reports/implementation_audit.md)
 
-> This page is synchronized from the repository's authoritative research record. Its verification statements describe the scientific study at the recorded date; website validation is documented separately.
+> This is the detailed technical record. For a plain-language explanation, start with [the study](../research/question.md) or [the conclusion](../research/findings.md). This page is copied from the original report; its checks describe the research at the date recorded.
 
 # Implementation audit
 

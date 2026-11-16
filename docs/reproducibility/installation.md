@@ -3,9 +3,9 @@ title: Installation
 description: Separate Python environments for building the MkDocs website and reproducing the scientific analysis.
 ---
 
-# Start with the environment you need
+# Set up Python
 
-Use **Python 3.11 or newer** and run commands from the repository root. Building the website only needs documentation dependencies and the committed aggregate outputs. It does not need to rerun the scientific pipeline or download games.
+Use **Python 3.11 or newer** and run commands from the repository root. Choose the website setup to preview pages, or the scientific setup to rerun the analysis.
 
 ## Build the website
 
@@ -27,7 +27,7 @@ Use **Python 3.11 or newer** and run commands from the repository root. Building
     python -m mkdocs serve
     ```
 
-Open the local address printed by MkDocs, normally `http://127.0.0.1:8000`. The build hook synchronizes final reports, figures and compact aggregate JSON from the existing research outputs. The explorer requires serving the site over HTTP; opening a generated HTML file directly can prevent its JSON fetch.
+Open the local address printed by MkDocs, normally `http://127.0.0.1:8000`. MkDocs copies the saved reports, charts and group results during the build. Use the local server to view the site; opening an HTML file directly can prevent the explorer from loading its data.
 
 For a production build:
 
@@ -55,6 +55,6 @@ The compiled site goes to `site/`, which is ignored by Git. A website build neve
     python -m pip install -r requirements.txt
     ```
 
-The scientific requirements are preserved separately. The versions used for the recorded run are listed in [`results/software_versions.json`](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/results/software_versions.json). The manifest and retained Parquet sample must be present for full reproduction; the complete monthly compressed source is not bundled.
+The analysis uses a separate set of packages. The versions used for the saved run are listed in [`results/software_versions.json`](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/results/software_versions.json). You also need the saved Parquet sample and its manifest. The full monthly archive is not bundled.
 
 Continue with [running the analysis](running.md), [the notebook guide](notebook.md) or [validation](validation.md).

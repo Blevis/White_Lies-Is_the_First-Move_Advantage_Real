@@ -1,33 +1,48 @@
 ---
-title: Findings and interpretation
-description: What the March study establishes, how large the observed associations are and where interpretation must remain limited.
+title: 6. The conclusion
+description: Two clear answers, with the limits that matter.
 ---
 
-# What the evidence says
+# 6. A small edge for White
 
-The study finds a measurable scoring imbalance in favor of White and opening-reply associations in some defined groups. Its strongest conclusion is about **observed scoring patterns in eligible March 2025 Lichess games**.
+<div class="study-answer" markdown="1">
+**White earned about 51.8% of the points.**
 
-## A detectable association with a modest magnitude
+The main estimate is **51.776%**, with a **95% interval of 51.653%–51.899%**. This is a small scoring edge in the games studied.
+</div>
 
-The primary score is **51.776%**, or **1.776 percentage points above 50%**. The narrow interval reflects a large observed sample under the stated sampling and dependence assumptions. Statistical detectability does not establish a large change in an individual player's chance of winning.
+## The two answers
 
-White's weighted outright-win share is **49.533%**, with **4.486% draws** and **45.980% Black wins**. A draw counts half toward White's expected score. Interchanging score, win probability and decisive-game win rate would change the question being answered.
-
-## Several analyses support the direction
-
-The near-equal-rating score of 51.819% and standardized score of 51.886% remain above 50%. Shared-player sensitivity produces a similar interval for the primary mean. These checks address particular assumptions; they do not create random assignment or remove every source of dependence.
-
-The at-least-40-ply result is **50.769%**. Its **−1.007 pp** shift is a meaningful warning against treating the primary magnitude as universal. Conditioning on game length changes which outcomes enter the study.
-
-## Reply associations are conditional
-
-H2's **14 / 35 score** and **15 / 35 distribution** results belong to different corrected testing families. They neither show an association in every group nor identify a defense that would improve a particular player's outcome. The near-equal-rating sensitivity leaves only one score rejection among 28 tested cells.
-
-| Supported interpretation | Why a broader claim is unsupported |
+| Question | Answer |
 | --- | --- |
-| White scores above 50% in the primary weighted analysis | Observational data do not isolate the causal effect of color |
-| Reply distributions differ in some cells | Reply choice reflects player selection and other game conditions |
-| Scores vary across rating bands | The pattern is not monotonic and bands are platform-specific |
-| Some sparse cells are inconclusive | Lack of evidence does not establish equal scores |
+| **Does White score more?** | Yes, in this sample's weighted analysis. The positive direction holds across the reported checks. |
+| **Do Black's replies differ?** | In some groups. The evidence weakens sharply among closely matched players. |
 
-Read the [limitations](limitations.md) alongside the [full report](report.md). The [interactive explorer](../explore/index.md) shows the recorded estimates without running additional tests in the browser.
+**Score is not win rate.** Draws add half a point. White's weighted win rate was **49.533%**.
+
+## What follows from this?
+
+- The edge is **small**, and its size changes with the games included.
+- The reply results **do not identify a best defense**.
+- One month of observed games **does not prove cause and effect**.
+
+## From games to evidence
+
+**Collect → Check → Prepare → Analyze → Test assumptions → Report.**
+
+The outputs include the validated sample, result tables, **11 graphs**, notebook and research reports.
+
+??? info "Files and reproduction"
+    Inputs are in `data/`; code in `src/`; results in `results/`; graphs in `figures/`; original reports in `reports/`. The root `analysis.ipynb` runs the same offline pipeline.
+
+    After installing the scientific environment, use a separate output directory:
+
+    ```bash
+    python -m src.run_analysis --output-root /path/to/separate-output
+    ```
+
+    The saved sample and manifest are required. The run uses seed **202503** and **10,000 repetitions**. The default repository run can also regenerate the research README.
+
+    Building the website reads saved group results; it does not rerun the statistics or publish individual games. [Full setup and output guide](../reproducibility/installation.md).
+
+The [study reference](reference.md) collects the graphs, formulas and glossary. [Detailed methods](../methodology/data.md) and the [full report](report.md) provide the technical record.

@@ -7,7 +7,7 @@ description: The authoritative March 2025 study, including data, methods, result
 
 [Download the original Markdown](../assets/reports/FINAL_RESEARCH_REPORT.md) · [View research source](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/reports/FINAL_RESEARCH_REPORT.md)
 
-> This page is synchronized from the repository's authoritative research record. Its verification statements describe the scientific study at the recorded date; website validation is documented separately.
+> This is the detailed technical record. For a plain-language explanation, start with [the study](../research/question.md) or [the conclusion](../research/findings.md). This page is copied from the original report; its checks describe the research at the date recorded.
 
 # White Lies: Is the First-Move Advantage Real?
 

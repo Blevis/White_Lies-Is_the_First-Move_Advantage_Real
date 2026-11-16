@@ -1,26 +1,29 @@
 ---
 title: About White Lies
-description: An auditable chess research case study combining statistical analysis, reproducibility and a static interactive publication.
+description: A chess data project about White's score and Black's first reply.
 ---
 
-# WHITE LIES
+# About White Lies
 
-*Is the First-Move Advantage Real?*
+**White Lies: Is the First-Move Advantage Real?** studies two questions: does White earn more than half the points, and are outcomes different after different first replies by Black?
 
-White Lies investigates whether White scores above 50% in observed chess games, and whether Black's immediate replies are associated with different outcomes in defined groups. The completed research scope is a validated sample of Lichess rated-standard games played in **March 2025**.
+The completed analysis uses a sample of rated standard Lichess games played in **March 2025**. The [repository](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real) contains the code, data checks, results, notebook and reports. Its history records individual contributions.
 
-The project repository is [Blevis/White_Lies-Is_the_First-Move_Advantage_Real](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real). Repository history provides attribution for individual contributions. No institutional affiliation, peer-review status or external endorsement is asserted by this site.
+## How to read the website
 
-## Designed to be examined
+- **The study** tells the story in six steps, from the questions to the conclusion.
+- **Explore** lets you compare saved results and see the opening moves on a board.
+- **Detailed methods** explains the calculations and provides the full research report.
+- **Reproduce the work** shows how to set up Python, run the analysis and check its outputs.
 
-The publication links from plain-language findings to methodological choices, source outputs and reproduction commands. Its explorer selects precomputed aggregate records. The opening board explains which moves define a group; it is not an engine and does not recommend a defense.
+The site uses MkDocs and Material for MkDocs. The explorer displays saved group summaries; it does not run new tests. The board explains the moves, without evaluating positions.
 
-The full report and audit are synchronized from their source files. The original scientific pipeline, sample, notebook and figures remain available in their repository locations. The site uses MkDocs and Material for MkDocs, local styling and lightweight JavaScript, with GitHub Pages as the deployment target.
+## Contribute
 
-## Contributing
+Use the [repository](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real) to report an issue or propose a change. Include the page, affected number or filter selection, and enough detail to reproduce the problem.
 
-Report a reproducible issue or propose a focused change through the [repository](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real). For a statistical concern, identify the affected table, cell, method or source passage. For an interface issue, include the page, browser and relevant filter selection.
+Changes to results should come from the analysis outputs and be checked before publication. Report pages are copied from the original files, so edit those originals when changing the technical record.
 
-Changes to numerical findings should originate in the analysis and regenerated outputs, with validation evidence. Website-only changes should preserve the meanings of score, sample size, weighting, uncertainty and observational association. A presentation improvement must not silently strengthen a scientific claim.
+The project does not claim peer review, institutional affiliation or external endorsement.
 
-Start with the [research question](../research/question.md), browse the [full report](../research/report.md), or follow the [reproduction guide](../reproducibility/installation.md).
+Start with [the questions](../research/question.md), or use the [study reference](../research/reference.md).

@@ -1,11 +1,11 @@
 ---
 title: Notebook guide
-description: How to inspect and execute the authoritative analysis notebook without using the archived historical generator.
+description: Open the saved notebook, follow the analysis, or execute it again.
 ---
 
 # Read the analysis as a notebook
 
-`analysis.ipynb` is the executed scientific notebook at the repository root. It imports the `src` package, reruns the same offline March pipeline and displays the exported evidence with interpretation. The recorded notebook contains **24 cells**, including **10 executed code cells** with no saved error outputs.
+`analysis.ipynb` is the executed scientific notebook at the repository root. It uses the `src` code to run the offline March analysis and display the results. The recorded notebook contains **24 cells**, including **10 executed code cells** with no saved error outputs.
 
 ## Open it interactively
 
@@ -27,9 +27,9 @@ python -m jupyter nbconvert --to notebook --execute --inplace analysis.ipynb --E
 
 This command updates the notebook in place and the notebook's analysis pipeline regenerates research artifacts. Save or review existing changes before execution. The 600-second setting is a per-cell timeout, not a guarantee of total execution duration on every machine.
 
-## A reading route
+## Suggested reading order
 
-Start with provenance and sample accounting, then follow the definitions of score and weights. Read H1 alongside its rating adjustments and uncertainty, and read H2 alongside its eligibility and coverage. Finish with robustness and limitations before interpreting any selected reply extremes.
+Start with the source and game counts, then learn how score and weights work. Read the White-score result, followed by the reply comparisons. Finish with the checks and limits before drawing conclusions about any individual reply.
 
 The site provides the same route through [dataset](../methodology/data.md), [H1](../research/h1.md), [H2](../research/h2.md) and [robustness](../methodology/robustness.md) pages. The [full report](../research/report.md) is synchronized from the repository's authoritative Markdown report.
 

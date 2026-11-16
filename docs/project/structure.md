@@ -3,9 +3,9 @@ title: Repository structure
 description: How the scientific pipeline, frozen outputs, documentation and static website implementation fit together.
 ---
 
-# A research repository, with a reading layer
+# Where to find things
 
-The scientific inputs, analysis and generated evidence retain their existing locations. MkDocs adds a static publication and explorer over those artifacts.
+The repository contains the game sample, analysis code, saved results and website. Start with `docs/` to edit the website, or `src/` to inspect the analysis.
 
 ```text
 White_Lies-Is_the_First-Move_Advantage_Real/
@@ -34,7 +34,7 @@ White_Lies-Is_the_First-Move_Advantage_Real/
 └── website/                    # Preserved earlier Streamlit interface
 ```
 
-## Scientific implementation
+## Analysis code
 
 `src/validation.py` validates provenance and records cleaning. `src/stats.py` supplies shared numerical helpers; `src/hypothesis_h1.py` and `src/hypothesis_h2.py` organize the final analyses. `src/h2.py` preserves the underlying score-spread simulation. `src/run_analysis.py`, `src/plotting.py` and `src/reporting.py` orchestrate execution and output.
 
@@ -42,6 +42,6 @@ Optional collectors and metadata helpers remain in `src/fetch_games.py`, `src/ex
 
 ## Website maintenance
 
-Edit explanatory pages under `docs/`. Edit authoritative reports in their scientific source location, then regenerate their website copies; do not maintain independent report text. The asset generator exports validated aggregates and only the eleven final figure pairs. Browser filters read those exports without a server or statistical recomputation.
+Edit the explanatory pages under `docs/`. For the full report and audit, edit the original in `reports/` and regenerate the site copy. The website reads saved group results and the eleven final chart pairs. Its filters select those results without running new tests.
 
 `site/` is a disposable build directory and is not committed. [Installation](../reproducibility/installation.md) explains local preview; [output provenance](../reproducibility/outputs.md) explains generated artifacts.

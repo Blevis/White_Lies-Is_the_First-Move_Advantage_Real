@@ -88,19 +88,34 @@ def run(url, args):
         expect(page.locator(".md-search-result__item").first).to_be_visible(timeout=15000)
         page.keyboard.press("Escape")
         checks.append("Search returns research results")
+        page.locator(".wl-hero").get_by_role("link", name="Start the study", exact=True).click()
+        for path, next_label in (
+            ("research/question/", "2. Collect and prepare the data →"),
+            ("research/approach/", "3. Does White score more? →"),
+            ("research/h1/", "4. Does Black's reply matter? →"),
+            ("research/h2/", "5. Checks and limits →"),
+            ("research/limitations/", "6. The conclusion →"),
+        ):
+            expect(page).to_have_url(url + path)
+            page.locator(".md-content__inner").get_by_role("link", name=next_label, exact=True).click()
+        expect(page).to_have_url(url + "research/findings/")
+        page.locator(".md-content__inner").get_by_role("link", name="study reference", exact=True).click()
+        expect(page.locator("h1")).to_contain_text("Graphs, formulas and concepts")
+        page.screenshot(path=str(artifacts / "reference-1440.png"), full_page=True)
+        checks.append("Six-step study path and study reference")
         page.goto(url + "explore/", wait_until="networkidle")
         root = page.locator("[data-wl-explorer]")
         expect(root).to_have_attribute("data-wl-ready", "true")
         h1 = root.locator("[data-h1-panel]")
         expect(h1.locator("[data-kpis]")).to_contain_text("836,070")
         expect(h1.locator("[data-chart-primary]")).to_contain_text("51.776%")
-        h1.get_by_role("combobox", name="Estimator", exact=True).select_option("raw")
+        h1.get_by_role("combobox", name="Calculation", exact=True).select_option("raw")
         expect(h1.locator("[data-chart-primary]")).to_contain_text("51.900%")
         h1.get_by_role("combobox", name="Time control", exact=True).select_option("classical")
-        expect(h1.get_by_role("combobox", name="Estimator", exact=True)).to_have_value("weighted")
+        expect(h1.get_by_role("combobox", name="Calculation", exact=True)).to_have_value("weighted")
         expect(h1.locator('option[value="raw"]')).to_have_attribute("disabled", "")
         expect(root.locator("[data-status]")).to_contain_text("Unweighted subgroup intervals are unavailable")
-        h1.get_by_role("combobox", name="Mean-rating band", exact=True).select_option("2500")
+        h1.get_by_role("combobox", name="Average rating band", exact=True).select_option("2500")
         expect(h1.locator("[data-h1-status]")).to_contain_text("Descriptive only")
         h1.locator("[data-reset]").click()
         expect(h1.locator("[data-chart-primary]")).to_contain_text("51.776%")
@@ -111,11 +126,11 @@ def run(url, args):
         expect(opening.locator(".wl-square")).to_have_count(64)
         expect(opening.locator('[data-square="a1"]')).to_have_class("wl-square wl-square-dark")
         expect(opening.locator('[data-square="e4"]')).to_have_attribute("data-piece", "wP")
-        opening.get_by_role("combobox", name="Black’s immediate reply", exact=True).select_option("c5")
+        opening.get_by_role("combobox", name="Black’s reply", exact=True).select_option("c5")
         expect(opening.locator('[data-square="c5"]')).to_have_attribute("data-piece", "bP")
         expect(opening.locator('[data-square="c7"]')).to_have_attribute("data-piece", "")
         opening.get_by_role("combobox", name="White’s first move", exact=True).select_option("d4")
-        opening.get_by_role("combobox", name="Black’s immediate reply", exact=True).select_option("Nf6")
+        opening.get_by_role("combobox", name="Black’s reply", exact=True).select_option("Nf6")
         expect(opening.locator('[data-square="d4"]')).to_have_attribute("data-piece", "wP")
         expect(opening.locator('[data-square="d2"]')).to_have_attribute("data-piece", "")
         expect(opening.locator('[data-square="e2"]')).to_have_attribute("data-piece", "wP")
@@ -127,38 +142,80 @@ def run(url, args):
         expect(opening.locator('[data-square="g8"]')).to_have_attribute("data-piece", "bN")
         opening.locator("[data-board-show]").click()
         expect(opening.locator('[data-square="f6"]')).to_have_attribute("data-piece", "bN")
-        opening.get_by_role("searchbox", name="Search tested reply notation", exact=True).fill("Nf6")
+        opening.get_by_role("searchbox", name="Search replies", exact=True).fill("Nf6")
         expect(opening.locator("[data-reply-table] [data-show-reply]")).to_have_count(1)
-        opening.get_by_role("searchbox", name="Search tested reply notation", exact=True).fill("")
+        opening.get_by_role("searchbox", name="Search replies", exact=True).fill("")
         opening.locator('[data-sort="N"]').click()
         expect(opening.locator('[data-sort="N"]').locator("..")).to_have_attribute("aria-sort", "ascending")
         opening.get_by_role("combobox", name="Time control", exact=True).select_option("classical")
-        opening.get_by_role("combobox", name="Mean-rating band", exact=True).select_option("2500")
+        opening.get_by_role("combobox", name="Average rating band", exact=True).select_option("2500")
         expect(opening.locator("[data-reply-chart] .wl-empty")).to_be_visible()
-        expect(opening.get_by_role("combobox", name="Black’s immediate reply", exact=True)).to_be_disabled()
+        expect(opening.get_by_role("combobox", name="Black’s reply", exact=True)).to_be_disabled()
         expect(opening.locator("[data-reply-table] [data-show-reply]")).to_have_count(0)
-        opening.get_by_role("combobox", name="Mean-rating band", exact=True).select_option("0")
-        expect(opening.locator("[data-reply-chart]")).to_contain_text("excludes mean-rating bands below 1200")
+        opening.get_by_role("combobox", name="Average rating band", exact=True).select_option("0")
+        expect(opening.locator("[data-reply-chart]")).to_contain_text("excludes rating bands below 1200")
         checks.append("H2 filters, both openings, legal pawn/knight moves, board reset, table search/sort, unavailable cells")
         root.get_by_role("combobox", name="View results", exact=True).focus()
         page.keyboard.press("ArrowUp")
         page.keyboard.press("Tab")
         assert page.evaluate("document.activeElement !== document.body"), "Keyboard focus was lost"
         checks.append("Keyboard controls and focus")
+        study_figures = set()
+        study_paths = ("research/question/", "research/approach/", "research/h1/",
+                       "research/h2/", "research/limitations/", "research/findings/",
+                       "research/reference/")
         for width in (360, 390, 768, 1024, 1440):
             page.set_viewport_size({"width": width, "height": 960})
-            for path in ("", "explore/", "research/report/"):
+            for path in ("", "explore/", "research/report/", *study_paths):
                 page.goto(url + path, wait_until="networkidle")
                 page.evaluate("document.fonts.ready")
+                expect(page.locator(".arithmatex:not([data-rendered])")).to_have_count(0)
+                expect(page.locator(".katex-error")).to_have_count(0)
+                if width == 1440 and path in study_paths:
+                    for graph in page.locator(".md-content img.research-figure").all():
+                        graph.scroll_into_view_if_needed()
+                        expect(graph).to_have_js_property("complete", True)
+                        assert graph.evaluate("image => image.naturalWidth > 0"), "Study graph failed to load"
+                        study_figures.add(graph.get_attribute("src").rsplit("/", 1)[-1])
                 overflow = page.evaluate("({scroll:document.documentElement.scrollWidth, viewport:innerWidth})")
                 assert overflow["scroll"] <= overflow["viewport"] + 1, f"Page overflow at {width}px on {path}: {overflow}"
                 if width in (390, 1440) and path in ("", "explore/"):
                     page.screenshot(path=str(artifacts / f"{'home' if not path else 'explorer'}-{width}.png"), full_page=True)
-        checks.append("No document overflow at 360, 390, 768, 1024 and 1440 px on home/explorer/report")
+                if width == 390 and path in ("research/question/", "research/reference/"):
+                    page.screenshot(path=str(artifacts / f"{path.split('/')[-2]}-390.png"), full_page=True)
+                targets = {"research/approach/": "step-5-prepare-the-fields-used-in-analysis",
+                           "research/h1/": "step-3-calculate-the-score-and-apply-weights",
+                           "research/h2/": "step-4-simulate-equal-outcomes-and-run-two-tests"}
+                if width in (390, 1440) and path in targets:
+                    page.locator(f"#{targets[path]}").scroll_into_view_if_needed()
+                    page.screenshot(path=str(artifacts / f"{path.split('/')[-2]}-{width}.png"))
+                    graph = page.locator("figure.study-figure").first
+                    if graph.count():
+                        graph.scroll_into_view_if_needed()
+                        image = graph.locator("img.research-figure")
+                        expect(image).to_have_js_property("complete", True)
+                        expect(graph.locator("figcaption .study-figure__takeaway")).to_be_visible()
+                        expect(graph.locator(".study-figure__notes > div")).to_have_count(2)
+                        page_name = path.split("/")[-2]
+                        graph.screenshot(path=str(artifacts / f"graph-{page_name}-{width}.png"))
+                        if width == 1440 and path == "research/h1/":
+                            page.locator('label[title="Switch to light mode"]:visible').click()
+                            graph.screenshot(path=str(artifacts / "graph-h1-light-1440.png"))
+                            page.locator('label[title="Switch to dark mode"]:visible').click()
+        assert len(study_figures) == 11, f"Expected all eleven study graphs, found {study_figures}"
+        checks.append("All eleven study graphs load; study formulas render without errors")
+        checks.append("Compact graph captions render at phone/desktop widths and in both themes")
+        checks.append("No document overflow at 360, 390, 768, 1024 and 1440 px on home/explorer/report and every study page")
         page.goto(url + "research/report/", wait_until="networkidle")
         expect(page.locator(".katex").first).to_be_visible()
         expect(page.locator(".katex-error")).to_have_count(0)
         checks.append("Full-report mathematics render")
+        for path in ("methodology/statistics/", "methodology/uncertainty/"):
+            page.goto(url + path, wait_until="networkidle")
+            page.locator(".md-content details > summary").first.click()
+            expect(page.locator(".katex").first).to_be_visible()
+            expect(page.locator(".katex-error")).to_have_count(0)
+        checks.append("Expandable method formulas render")
         assert page.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches")
         animations = page.evaluate("document.getAnimations().filter(a=>a.playState==='running').length")
         assert animations == 0, "Ongoing animations despite reduced-motion preference"

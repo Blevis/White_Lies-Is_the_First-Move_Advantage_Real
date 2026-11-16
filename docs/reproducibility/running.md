@@ -3,15 +3,15 @@ title: Running the analysis
 description: Supported offline analysis commands, input requirements, output locations and the separation between research execution and site builds.
 ---
 
-# Reproduce the March analysis
+# Run the March analysis
 
-The supported entry point is `python -m src.run_analysis`, run from the repository root with the scientific environment active. It operates offline on the retained sample. It makes no Explorer, Wikipedia or monthly-dump requests.
+Activate the scientific environment and run commands from the repository root. The analysis works offline with the saved sample.
 
 ## Check the inputs
 
-Both `data/games_2025-03.parquet` and its adjacent `.manifest.json` file are required. The pipeline validates provenance before computing results, including the SHA-256, March dates, sampling rates and selected game IDs. A partial collection is not an interchangeable input.
+Both `data/games_2025-03.parquet` and its adjacent `.manifest.json` file are required. Before calculating results, the analysis checks the file checksum, March dates, sampling rates and selected game IDs. An incomplete sample cannot replace the validated input.
 
-## Preserve the recorded output bundle
+## Save a separate copy of the results
 
 For an isolated reproduction, use the supported output-root option:
 
@@ -27,9 +27,9 @@ For an isolated reproduction, use the supported output-root option:
     python -m src.run_analysis --output-root "$env:TEMP\white-lies-reproduction"
     ```
 
-The pipeline still reads the repository's validated input files, then writes `results/`, `figures/` and generated reports beneath the selected destination. This is a full scientific computation with 10,000 replicates and is more expensive than a website build.
+The pipeline still reads the repository's validated input files, then writes `results/`, `figures/` and generated reports beneath the selected destination. This runs the full analysis, including 10,000 simulation repetitions, so it takes longer than building the website.
 
-## Regenerate the repository artifacts
+## Update results inside the repository
 
 ```bash
 python -m src.run_analysis
@@ -47,6 +47,6 @@ The default command writes research artifacts into the repository. It also invok
 5. Run robustness scenarios; export scientific figures and reports.
 6. Verify that the expected artifacts exist and their contents are consistent.
 
-The website reads those completed outputs. Its build hook only transforms aggregate files and copies approved figures and reports. No game-level records become web assets.
+The website reads these completed results. Building the site copies reports, charts and group summaries; it does not publish individual game records.
 
 For the interactive research narrative, see [executing the notebook](notebook.md). For precise file roles, see [output files](outputs.md).

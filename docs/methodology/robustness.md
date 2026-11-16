@@ -1,42 +1,44 @@
 ---
-title: Robustness and sensitivity
-description: How game length, ratings, time forfeits, weighting and reply thresholds change estimates and tested-cell decisions.
+title: Testing other analysis choices
+description: Which findings hold up when we change the games included or the minimum reply counts.
 ---
 
-# Stable direction, sensitive magnitude
+# What changes when we make different choices?
 
-Every reported H1 sensitivity remains above 50% and statistically detectable under its test assumptions. That consistency does **not** imply an invariant effect size.
+A **sensitivity check** repeats the analysis after changing a rule or assumption. White’s score remains above 50% in every reported check, but the size of the edge changes. Reply differences are less consistent.
 
-## The game-length result matters
+## Keeping only longer games reduces the edge
 
-The primary analysis retains legitimate short games. Requiring at least **40 plies** leaves **688,011 games** and gives a weighted White score of **50.769%** (95% CI **50.637%–50.903%**). This is **1.007 percentage points below** the primary 51.776% estimate.
+The main analysis keeps valid short games. Requiring at least **40 plies**—40 individual moves, or 20 moves by each side—leaves **688,011 games**. White’s weighted score falls to **50.769%** (95% CI **50.637%–50.903%**), **1.007 percentage points below** the main result.
 
-Game length is determined after the opening. Conditioning on it changes the population and removes valid short outcomes. The result demonstrates sensitivity in magnitude; it is not a reason to silently replace the primary sample.
+Game length is known only after play. Removing short games changes the set of outcomes we study. This check shows why the precise size of the scoring edge should not be treated as universal.
 
-| H1 scenario | Observed N | White score | 95% interval | Change from primary |
+| White-score check | Sampled games | White score | 95% interval | Change from main result |
 | --- | ---: | ---: | --- | ---: |
-| Primary weighted | 836,070 | 51.776% | 51.653%–51.899% | — |
+| Main weighted result | 836,070 | 51.776% | 51.653%–51.899% | — |
 | Unweighted sample | 836,070 | 51.900% | 51.794%–52.005% | +0.124 pp |
 | Rating gap ≤25 | 327,230 | 51.819% | 51.637%–52.004% | +0.042 pp |
 | Exclude time forfeits | 665,036 | 52.149% | 52.013%–52.284% | +0.373 pp |
 | At least 10 plies | 827,981 | 51.700% | 51.578%–51.822% | −0.076 pp |
 | At least 40 plies | 688,011 | 50.769% | 50.637%–50.903% | −1.007 pp |
 
-Additional reported checks restrict bands and exclude classical games. The full table appears in the [authoritative report](../research/report.md#7-discussion-and-robustness) and `results/robustness_results.csv`. A 1 pp change is the study's transparent descriptive flag, not a universal threshold for chess importance. Sensitivity p-values are exploratory and unadjusted.
+Other checks limit rating bands or exclude classical games. The [full report](../research/report.md#7-discussion-and-robustness) and `results/robustness_results.csv` record them all. Here, **pp** means percentage points. The study flags changes of at least 1 point for attention; this is a reporting choice, not a universal measure of chess importance. These checks use exploratory, unadjusted p-values.
 
-## H2 changes with eligibility and selection
+## Reply findings change with the comparison rules
 
-| H2 scenario | Tested cells | Score rejections | Distribution rejections |
+| Reply-analysis check | Tested groups | Groups with score differences | Groups with win/draw/loss differences |
 | --- | ---: | ---: | ---: |
-| Primary | 35 | 14 | 15 |
-| Reply floor 100 | 36 | 11 | 12 |
-| Reply floor 500 | 32 | 11 | 14 |
-| Reply floor 1000 | 26 | 13 | 15 |
+| Main analysis | 35 | 14 | 15 |
+| Minimum 100 games per reply | 36 | 11 | 12 |
+| Minimum 500 games per reply | 32 | 11 | 14 |
+| Minimum 1,000 games per reply | 26 | 13 | 15 |
 | All rating bands | 44 | 15 | 14 |
 | Rating gap ≤25 | 28 | 1 | 0 |
 | Exclude time forfeits | 35 | 22 | 18 |
 | At least 10 plies | 35 | 13 | 13 |
 
-Each H2 scenario has its own correction families. Tested groups and selected extremes can change, so these counts are not a comparison over an identical set of cells. Near-equal restriction attenuates evidence, with sample-size loss and confounding both plausible contributors. Constant weights within a fixed speed-band cell cannot change its H2 scores.
+Each row has its own adjustment for multiple tests. The eligible groups can change between rows, so the counts do not compare exactly the same games.
+
+Keeping players within 25 rating points weakens the reply evidence substantially. This may reflect fewer games, changes in who is compared, or both; the analysis cannot separate those explanations. Within a fixed speed-and-rating group, every game has the same sampling weight, so weighting does not change the reply scores.
 
 [Compare recorded sensitivities interactively](../explore/index.md) · [Read the limitations](../research/limitations.md)

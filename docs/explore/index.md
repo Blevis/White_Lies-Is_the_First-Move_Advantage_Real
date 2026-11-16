@@ -1,36 +1,39 @@
 ---
-title: Interactive research explorer
-description: Explore the validated March 2025 White Lies results with population filters, confidence intervals, outcome shares, opening replies, and sensitivity comparisons.
+title: Data explorer
+description: Compare White's score, opening replies and analysis checks using the saved study results.
 hide:
   - toc
 ---
 
-# Follow the evidence
+# Explore the results
 
-A small scoring difference. A large observational study. Explore **836,070 sampled games** through the estimates, intervals, and exclusions that give the findings their meaning.
+Use the filters to compare **White's score**, **Black's opening replies**, and **checks using different game selections**. Start with all games, then look at a speed or rating group.
 
-This dashboard reads the final, exported March 2025 results. Filters select existing estimates; they do not run new significance tests. **White score counts a draw as half a point and is different from White win probability.**
+**Score includes half a point for each draw. It is different from win rate.** The explorer displays saved results from the March 2025 study; filters do not run new tests.
 
 <div data-wl-explorer>
-  <p role="status">Loading the validated research aggregates…</p>
-  <noscript><p>This explorer needs JavaScript. The <a href="../research/report/">full report</a> and <a href="figures/">scientific figures</a> provide the same research evidence without interactive controls.</p></noscript>
+  <p role="status">Loading the study results…</p>
+  <noscript><p>This explorer needs JavaScript. Read the <a href="../research/findings/">conclusion</a> or the <a href="figures/">chart guide</a> for the findings without interactive controls.</p></noscript>
 </div>
 
-## Reading the dashboard
+## How to use the explorer
 
-- **H1 filters** select time control, mean-rating band, and estimator. The speed comparison holds the selected rating band fixed; the rating comparison holds the selected speed fixed. Both comparison charts always use the published weighted estimates.
-- **Unweighted estimates** describe the deliberately oversampled sample. Only the whole-sample unweighted interval is exported, so that option becomes unavailable when selecting a subgroup.
-- **H2 filters** select a separate first-move / speed / rating cell. Only replies in a tested cell that meet the 200-game threshold enter the chart and table. Unavailable cells explain why they were not tested.
-- **Gold points and lines** show White scores and exported 95% intervals. Focus or hover a chart row to read its full interval; the dashed line marks 50%. Each chart adapts its scale to the displayed uncertainty.
-- **The sensitivity chart** always shows the same whole-study comparisons. The at-least-40-ply restriction changes the target population and materially reduces the estimated scoring difference.
+1. **Choose a view:** White's score, opening replies, or both.
+2. **Choose a game speed and rating band.** Rating bands use the average of both players' ratings. The speed chart holds the selected rating band fixed; the rating chart holds the selected speed fixed.
+3. **Read the point and line together.** The point is the score and the line is its 95% confidence interval. The dashed line marks 50%. Focus or hover a row for the exact interval.
+4. **Compare replies separately.** The opening section has its own first-move, speed and rating filters. Only replies with at least 200 sampled games in a tested group appear.
+5. **Check the alternative analyses.** The final White-score chart compares the whole-study checks. It does not change with the filters above.
 
-!!! warning "Association, uncertainty, and selection"
-    These are observational data from one site and one month. Ratings, opening choice, and repeated players complicate interpretation. A reply's interval is marginal; sorting or selecting an extreme does not make it a causal effect or a recommendation. A nonsignificant test does not prove equality.
+The main estimate is **weighted** to account for different sampling rates. The unweighted option describes the collected sample and is available only for all games together. The speed and rating comparison charts always use weighted results.
 
-Explore the [H1 analysis](../research/h1.md), [H2 analysis](../research/h2.md), [uncertainty methods](../methodology/uncertainty.md), and [robustness checks](../methodology/robustness.md) for the assumptions behind these views.
+## What to keep in mind
 
-## Data provenance
+The charts rescale to fit the intervals, so read the axis labels before comparing distances. Some groups have too little data for a test. A missing or inconclusive result does not mean equal scores.
 
-The small [aggregate data file](../assets/data/research.json) contains exported group statistics, provenance hashes, and the published summaries. It contains no game records or player identifiers. The website build copies these values from `results/`; it neither re-runs the analysis nor downloads the source dump.
+Players choose their openings, and some players appear repeatedly. A high or low reply score does not establish the best defense. The [checks and limits](../research/limitations.md) explain why.
 
-The authoritative sources are [`h1_results.csv`](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/results/h1_results.csv), [`h2_reply_scores.csv`](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/results/h2_reply_scores.csv), [`h2_results.csv`](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/results/h2_results.csv), and [`robustness_results.csv`](https://github.com/Blevis/White_Lies-Is_the_First-Move_Advantage_Real/blob/main/results/robustness_results.csv). See the [output guide](../reproducibility/outputs.md) to trace each view back to the research pipeline.
+## Where the numbers come from
+
+The [downloadable data file](../assets/data/research.json) contains group summaries and source-file checksums, without individual games or player names. The website reads completed analysis outputs.
+
+See the [output-file guide](../reproducibility/outputs.md) to trace a number back to its source. For the statistical details, read [scores, weights and tests](../methodology/statistics.md) and [understanding uncertainty](../methodology/uncertainty.md).
